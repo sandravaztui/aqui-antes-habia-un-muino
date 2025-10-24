@@ -1,42 +1,49 @@
 <!DOCTYPE html>
-<html>
-  <head>
-    <meta charset="utf-8" />
-    <title>Mapa da memoria</title>
-    <link
-      rel="stylesheet"
-      href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css"
-      integrity="sha256-sA+4Q1L8H8HkLkYQ1PyfHjwFzFHzBWv0L1YSA1Y4n8M="
-      crossorigin=""
-    />
-    <style>
-      html,
-      body {
-        margin: 0;
-        height: 100%;
-      }
-      #map {
-        height: 100%;
-        width: 100%;
-      }
-    </style>
-  </head>
-  <body>
-    <div id="map"></div>
-    <script>
-      const map = L.map('map', {
-      scrollWheelZoom: false}).setView([43.3613, -8.4177], 15);
-        L.tileLayer('https://{s}.basemaps.cartocdn.com/light_all/{z}/{x}/{y}{r}.png', {
-        attribution: '&copy; <a href="https://www.openstreetmap.org/">OSM</a> &copy; <a href="https://carto.com/">CARTO</a>',
-        subdomains: 'abcd',
-        }).addTo(map);
-        
-        L.marker([43.3613, -8.4177]).addTo(map)
-          .bindPopup("<b>Muíño da Gramela</b><br>Coordenadas: 43.3613, -8.4177");
-    
-        L.marker([43.3609, -8.4177]).addTo(map)
-          .bindPopup("<b>Mural 1</b><br>Artista: David Pintor");
-      });
-    </script>
-  </body>
+<html lang="es">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Mapa da Memoria</title>
+  <link rel="stylesheet" href="https://unpkg.com/leaflet/dist/leaflet.css" />
+  <style>
+    body { margin:0; padding:0; }
+    #map { height: 100vh; width: 100%; }
+  </style>
+</head>
+<body>
+
+<div id="map"></div>
+
+<script src="https://unpkg.com/leaflet/dist/leaflet.js"></script>
+<script>
+  const map = L.map('map').setView([43.3613, -8.4177], 15);
+
+  // Fondo OSM clásico
+  L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
+    maxZoom: 19,
+    attribution: '&copy; <a href="https://www.openstreetmap.org/">OpenStreetMap</a>'
+  }).addTo(map);
+
+  // Marcadores
+  const puntos = [
+    {
+      coords: [43.3613, -8.4177],
+      texto: "<b>Muíño da Gramela</b><br>Antigo emprazamento do muíño"
+    },
+    {
+      coords: [43.3609, -8.4177],
+      texto: "<b>Mural 1</b><br>Artista: David Pintor"
+    },
+    {
+      coords: [43.3621, -8.4168],
+      texto: "<b>Espazo veciñal</b><br>Punto de encontro e memoria"
+    }
+  ];
+
+  puntos.forEach(p => {
+    L.marker(p.coords).addTo(map).bindPopup(p.texto);
+  });
+</script>
+
+</body>
 </html>
