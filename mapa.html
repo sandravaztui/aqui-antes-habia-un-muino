@@ -6,44 +6,33 @@
   <title>Mapa da Memoria</title>
   <link rel="stylesheet" href="https://unpkg.com/leaflet/dist/leaflet.css" />
   <style>
-    body { margin:0; padding:0; }
+    body { margin: 0; padding: 0; }
     #map { height: 100vh; width: 100%; }
   </style>
 </head>
 <body>
 
-<div id="map"></div>
+  <div id="map"></div>
 
-<script src="https://unpkg.com/leaflet/dist/leaflet.js"></script>
-<script>
-  const map = L.map('map').setView([43.3613, -8.4177], 15);
+  <script src="https://unpkg.com/leaflet/dist/leaflet.js"></script>
+  <script>
+    // Crear mapa centrado en A Coruña
+    const map = L.map('map', {
+      scrollWheelZoom: false
+    }).setView([43.3613, -8.4177], 15);
 
-  // Fondo OSM clásico
-  L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
-    maxZoom: 19,
-    attribution: '&copy; <a href="https://www.openstreetmap.org/">OpenStreetMap</a>'
-  }).addTo(map);
+    // Capa base CARTO Light (el estilo gris claro que se ve en tu imagen)
+    L.tileLayer('https://{s}.basemaps.cartocdn.com/light_all/{z}/{x}/{y}{r}.png', {
+      attribution: '&copy; <a href="https://www.openstreetmap.org/">OpenStreetMap</a> | &copy; <a href="https://carto.com/">CARTO</a>',
+      subdomains: 'abcd',
+      maxZoom: 19
+    }).addTo(map);
 
-  // Marcadores
-  const puntos = [
-    {
-      coords: [43.3613, -8.4177],
-      texto: "<b>Muíño da Gramela</b><br>Antigo emprazamento do muíño"
-    },
-    {
-      coords: [43.3609, -8.4177],
-      texto: "<b>Mural 1</b><br>Artista: David Pintor"
-    },
-    {
-      coords: [43.3621, -8.4168],
-      texto: "<b>Espazo veciñal</b><br>Punto de encontro e memoria"
-    }
-  ];
-
-  puntos.forEach(p => {
-    L.marker(p.coords).addTo(map).bindPopup(p.texto);
-  });
-</script>
+    // Marcador principal
+    L.marker([43.3613, -8.4177]).addTo(map)
+      .bindPopup("<b>Muíño da Gramela</b><br>A Coruña");
+  </script>
 
 </body>
 </html>
+
