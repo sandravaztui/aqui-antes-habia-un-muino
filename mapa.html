@@ -29,29 +29,19 @@
   <body>
     <div id="map"></div>
     <script>
-      const map = L.map("map").setView([43.3703, -8.3952], 15);
-
-      L.tileLayer("https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png", {
-        attribution:
-          "© <a href='https://www.openstreetmap.org/'>OpenStreetMap</a> contributors",
-      }).addTo(map);
-
-      const puntos = [
-        {
-          coords: [43.3708, -8.396],
-          texto: "<b>Antigo muíño</b><br/>Lugar onde se atopaba o muíño histórico.",
-        },
-        {
-          coords: [43.3712, -8.3945],
-          texto: "<b>Mural veciñal</b><br/>Intervención artística na rúa principal.",
-        },
-        {
-          coords: [43.3697, -8.3971],
-          texto: "<b>Praza da memoria</b><br/>Espazo de encontro e lembranza.",
-        },
-      ];
-
-      puntos.forEach((p) => L.marker(p.coords).addTo(map).bindPopup(p.texto));
+      const map = L.map('map', {
+      scrollWheelZoom: false}).setView([43.3613, -8.4177], 15);
+        L.tileLayer('https://{s}.basemaps.cartocdn.com/light_all/{z}/{x}/{y}{r}.png', {
+        attribution: '&copy; <a href="https://www.openstreetmap.org/">OSM</a> &copy; <a href="https://carto.com/">CARTO</a>',
+        subdomains: 'abcd',
+        }).addTo(map);
+        
+        L.marker([43.3613, -8.4177]).addTo(map)
+          .bindPopup("<b>Muíño da Gramela</b><br>Coordenadas: 43.3613, -8.4177");
+    
+        L.marker([43.3609, -8.4177]).addTo(map)
+          .bindPopup("<b>Mural 1</b><br>Artista: David Pintor");
+      });
     </script>
   </body>
 </html>
