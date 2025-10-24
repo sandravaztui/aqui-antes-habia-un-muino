@@ -6,8 +6,24 @@
   <title>Mapa da Memoria</title>
   <link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css" />
   <style>
-    body { margin: 0; padding: 0; }
-    #map { height: 400px; width: 100%; border-radius:12px; }
+    body {
+      margin: 0;
+      padding: 0;
+      background-color: #f5f6fa;
+      font-family: system-ui, sans-serif;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      height: 100vh;
+    }
+
+    #map {
+      height: 80vh;
+      width: 90%;
+      max-width: 1000px;
+      border-radius: 16px;
+      box-shadow: 0 4px 12px rgba(0,0,0,0.1);
+    }
   </style>
 </head>
 <body>
@@ -16,21 +32,22 @@
 
   <script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js"></script>
   <script>
-    const map = L.map('map', { scrollWheelZoom: false }).setView([43.3613, -8.4177], 15);
+    // Crear mapa centrado en A Coruña
+    const map = L.map('map', { scrollWheelZoom: false }).setView([43.3613, -8.4177], 16);
 
-    // Capa base CARTO Positron
+    // Capa base CARTO Positron (estilo claro)
     L.tileLayer('https://{s}.basemaps.cartocdn.com/light_all/{z}/{x}/{y}{r}.png', {
       attribution: '&copy; <a href="https://www.openstreetmap.org/">OpenStreetMap</a> | &copy; <a href="https://carto.com/">CARTO</a>',
       subdomains: 'abcd',
+      maxZoom: 19
     }).addTo(map);
 
-    // Marcador
+    // Marcadores
     L.marker([43.3613, -8.4177]).addTo(map)
       .bindPopup("<b>Muíño da Gramela</b><br>Coordenadas: 43.3613, -8.4177");
 
     L.marker([43.3609, -8.4177]).addTo(map)
       .bindPopup("<b>Mural 1</b><br>Artista: David Pintor");
-  });
   </script>
 
 </body>
