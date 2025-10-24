@@ -33,13 +33,13 @@
   <script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js"></script>
   <script>
     // Crear mapa centrado en A Coruña
-    const map = L.map('map', { scrollWheelZoom: false }).setView([43.3613, -8.4177], 20);
+    const map = L.map('map', { scrollWheelZoom: false }).setView([43.3613, -8.4177], 16);
 
     // Capa base CARTO Positron (estilo claro)
     L.tileLayer('https://{s}.basemaps.cartocdn.com/light_all/{z}/{x}/{y}{r}.png', {
       attribution: '&copy; <a href="https://www.openstreetmap.org/">OpenStreetMap</a> | &copy; <a href="https://carto.com/">CARTO</a>',
       subdomains: 'abcd',
-      maxZoom: 19
+      maxZoom: 10
     }).addTo(map);
 
     // Marcadores
