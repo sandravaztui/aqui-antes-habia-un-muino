@@ -1,8 +1,8 @@
 <!DOCTYPE html>
-<html lang="es">
+<html lang="gl">
 <head>
-  <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>Mapa da Memoria</title>
   <link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css" />
   <style>
@@ -10,64 +10,170 @@
       margin: 0;
       padding: 0;
       height: 100%;
-      background: #f4f4f4;
+      font-family: "Open Sans", sans-serif;
+      background: #f8f8f8;
     }
-    #map {
+
+    #container {
+      display: flex;
       height: 100vh;
       width: 100%;
-      border: none;
     }
-    .popup-content {
-      font-family: "Open Sans", sans-serif;
-      max-width: 240px;
+
+    #map {
+      flex: 2;
     }
-    .popup-content img {
-      width: 100%;
-      border-radius: 8px;
-      margin-top: 8px;
+
+    #panel {
+      flex: 1;
+      background: white;
+      padding: 1rem;
+      border-left: 2px solid #ddd;
+      display: flex;
+      flex-direction: column;
+      justify-content: space-between;
+      overflow-y: auto;
     }
-    .popup-content p {
-      margin: 6px 0 0;
-      font-size: 0.9rem;
+
+    #panel-content {
+      flex-grow: 1;
+    }
+
+    #panel h2 {
+      margin-top: 0;
       color: #333;
+    }
+
+    #panel img {
+      width: 100%;
+      border-radius: 10px;
+      margin-top: 0.5rem;
+    }
+
+    #panel p {
+      font-size: 0.95rem;
+      line-height: 1.4;
+      color: #444;
+    }
+
+    .testimonio {
+      background: #f2f2f2;
+      padding: 0.7rem;
+      border-left: 3px solid #999;
+      margin-top: 1rem;
+      font-style: italic;
+    }
+
+    #frases {
+      font-size: 1.2rem;
+      text-align: center;
+      font-style: italic;
+      transition: 1s;
+      opacity: 1;
+      transform: translateY(0);
+      color: orange;
+      margin-top: 1rem;
+      padding: 0.5rem;
+      border-top: 1px solid #eee;
     }
   </style>
 </head>
 <body>
-  <div id="map"></div>
+  <div id="container">
+    <div id="map"></div>
+
+    <div id="panel">
+      <div id="panel-content">
+        <h2>Selecciona un punto no mapa</h2>
+        <p>A información aparecerá aquí cando fagas clic nun marcador.</p>
+      </div>
+
+      <!-- Frases aleatorias -->
+      <div id="frases">Era un ente, un referente</div>
+    </div>
+  </div>
 
   <script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js"></script>
   <script>
     document.addEventListener("DOMContentLoaded", function() {
-      const map = L.map('map', { scrollWheelZoom: false })
-        .setView([43.3613, -8.4177], 17);
+      const map = L.map('map', { scrollWheelZoom: false }).setView([43.3613, -8.4177], 16);
 
       L.tileLayer('https://{s}.basemaps.cartocdn.com/light_all/{z}/{x}/{y}{r}.png', {
         attribution: '&copy; <a href="https://www.openstreetmap.org/">OSM</a> | &copy; <a href="https://carto.com/">CARTO</a>',
-        subdomains: 'abcd',
-        maxZoom: 19
+        subdomains: 'abcd'
       }).addTo(map);
 
-      L.marker([43.3613, -8.4177]).addTo(map)
-        .bindPopup(`
-          <div class="popup-content">
-            <h3>Muíño da Gramela</h3>
-            <p><em>Antigo muíño de vento situado no barrio do Agra do Orzán, símbolo da memoria industrial da cidade.</em></p>
-            <img src="https://www.asociacionbuxa.com/wp-content/uploads/2024/07/20200609-174852.jpg">
-          </div>
-        `);
+      const puntos = [
+        {
+          nombre: "Emprazamento do antigo muíño",
+          coords: [43.3613, -8.4177],
+          descripcion: "Lugar onde se erguía o antigo muíño da Gramela, hoxe desaparecido. Espazo central na memoria do barrio.",
+          img: "https://upload.wikimedia.org/wikipedia/commons/thumb/e/e4/Molino_de_viento_en_Galicia.jpg/320px-Molino_de_viento_en_Galicia.jpg",
+          testimonio: "«Aquí xogabamos cando eramos cativos, o son do vento no muíño era algo máxico.» — Veciño do Agra"
+        },
+        {
+          nombre: "Murais e intervencións artísticas",
+          coords: [43.3609, -8.4177],
+          descripcion: "Diversas intervencións artísticas homenaxean o patrimonio desaparecido e a identidade popular do barrio.",
+          img: "https://upload.wikimedia.org/wikipedia/commons/thumb/f/f8/Mural_art_in_A_Coru%C3%B1a.jpg/320px-Mural_art_in_A_Coru%C3%B1a.jpg",
+          testimonio: "«Os murais lembran o que fomos e o que seguimos a ser.» — Artista local"
+        },
+        {
+          nombre: "Espazos significativos",
+          coords: [43.3617, -8.4165],
+          descripcion: "Pequenas prazas e recunchos cargados de historia e vivencias cotiás dos veciños.",
+          img: "https://upload.wikimedia.org/wikipedia/commons/thumb/8/8a/Praza_de_A_Coru%C3%B1a.jpg/320px-Praza_de_A_Coru%C3%B1a.jpg",
+          testimonio: "«Cada banco, cada árbore, ten unha historia que contar.» — Veciña do barrio"
+        }
+      ];
 
-      L.marker([43.3609, -8.4177]).addTo(map)
-        .bindPopup(`
-          <div class="popup-content">
-            <h3>Mural 1</h3>
-            <p>Artista: David Pintor</p>
-            <p><em>Insertar unha descrición.</em></p>
-            <img src="https://unperiodistaenelbolsillo.com/wp-content/uploads/2017/07/IMG_3003.png">
-          </div>
-        `);
+      // --- Mostrar datos do punto no panel ---
+      const panel = document.getElementById('panel-content');
+      puntos.forEach(p => {
+        const marker = L.marker(p.coords).addTo(map);
+        marker.on('click', () => {
+          panel.innerHTML = `
+            <h2>${p.nombre}</h2>
+            <img src="${p.img}" alt="${p.nombre}">
+            <p>${p.descripcion}</p>
+            <div class="testimonio">${p.testimonio}</div>
+          `;
+        });
+      });
+
+      // --- Frases aleatorias ---
+      const frases = [
+        "El molino está muy presente y no se sabe",
+        "Era un ente, un referente",
+        "Nas pedras soltas xogaban os nenos e as nenas",
+        "Así estamos, que non temos un lugar verde, só casas",
+        "A festra do meu pai daba á de fronte ó muíño",
+        "No había muchos más espacios que ese para jugar",
+        "Nos dejaban hacer la hoguera de San Juan",
+        "Desmontar se desmontó, pero nunca más se volvió a montar",
+        "El caso es que no se respetó la historia del molino",
+        "Tenemos la Torre de Hércules, pero también teníamos ese molino",
+        "Parecía que estábamos en otro mundo",
+        "O muíño era un conxunto: a plataforma, as pedras o recinto. E cumpría unha función no barrio",
+        "Yo cuando abría la ventana lo veía"
+      ];
+
+      const bloque = document.getElementById("frases");
+
+      function cambiarFrase() {
+        bloque.style.opacity = 0;
+        bloque.style.transform = "translateY(10px)";
+        setTimeout(() => {
+          const random = Math.floor(Math.random() * frases.length);
+          bloque.textContent = frases[random];
+          bloque.style.opacity = 1;
+          bloque.style.transform = "translateY(0)";
+        }, 1000);
+      }
+
+      cambiarFrase();
+      setInterval(cambiarFrase, 5000);
     });
   </script>
-  <!-- update -->
 </body>
 </html>
