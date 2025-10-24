@@ -17,6 +17,20 @@
       width: 100%;
       border: none;
     }
+    .popup-content {
+      font-family: "Open Sans", sans-serif;
+      max-width: 240px;
+    }
+    .popup-content img {
+      width: 100%;
+      border-radius: 8px;
+      margin-top: 8px;
+    }
+    .popup-content p {
+      margin: 6px 0 0;
+      font-size: 0.9rem;
+      color: #333;
+    }
   </style>
 </head>
 <body>
@@ -35,10 +49,23 @@
       }).addTo(map);
 
       L.marker([43.3613, -8.4177]).addTo(map)
-        .bindPopup("<b>Muíño da Gramela</b><br>Coordenadas: 43.3613, -8.4177");
+        .bindPopup(`
+          <div class="popup-content">
+            <h3>Muíño da Gramela</h3>
+            <p><em>Antigo muíño de vento situado no barrio do Agra do Orzán, símbolo da memoria industrial da cidade.</em></p>
+            <img src="https://www.asociacionbuxa.com/wp-content/uploads/2024/07/20200609-174852.jpg">
+          </div>
+        `);
 
       L.marker([43.3609, -8.4177]).addTo(map)
-        .bindPopup("<b>Mural 1</b><br>Artista: David Pintor");
+        .bindPopup(`
+          <div class="popup-content">
+            <h3>Mural 1</h3>
+            <p>Artista: David Pintor</p>
+            <p><em>Insertar unha descripción.</em></p>
+            <img src="https://unperiodistaenelbolsillo.com/wp-content/uploads/2017/07/IMG_3003.png">
+          </div>
+        `);
     });
   </script>
   <!-- update -->
