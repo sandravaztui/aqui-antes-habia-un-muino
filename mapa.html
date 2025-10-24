@@ -1,0 +1,63 @@
+<!DOCTYPE html>
+<html lang="es">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Mapa da memoria - Muíño da Gramela</title>
+
+    <!-- Leaflet CSS -->
+    <link
+      rel="stylesheet"
+      href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css"
+      integrity="sha256-sA+4Q1L8H8HkLkYQ1PyfHjwFzFHzBWv0L1YSA1Y4n8M="
+      crossorigin=""
+    />
+
+    <style>
+      html,
+      body {
+        margin: 0;
+        height: 100%;
+        width: 100%;
+      }
+      #map {
+        height: 100%;
+        width: 100%;
+      }
+    </style>
+  </head>
+  <body>
+    <!-- Contenedor del mapa -->
+    <div id="map"></div>
+
+    <!-- Leaflet JS -->
+    <script
+      src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js"
+      integrity="sha256-o9N1j8Mk1QJ1kz6kLx0b0Kj8Dg1u5n0h5f2yJbJg3xU="
+      crossorigin=""
+    ></script>
+
+    <script>
+      // Inicializar el mapa centrado en A Coruña (Muíño da Gramela)
+      const map = L.map("map", {
+        scrollWheelZoom: false,
+      }).setView([43.3613, -8.4177], 15);
+
+      // Capa base de CartoDB (tono gris claro)
+      L.tileLayer("https://{s}.basemaps.cartocdn.com/light_all/{z}/{x}/{y}{r}.png", {
+        attribution:
+          "© <a href='https://www.openstreetmap.org/'>OpenStreetMap</a> &copy; <a href='https://carto.com/'>CARTO</a>",
+        subdomains: "abcd",
+      }).addTo(map);
+
+      // Marcadores
+      L.marker([43.3613, -8.4177])
+        .addTo(map)
+        .bindPopup("<b>Muíño da Gramela</b><br>Coordenadas: 43.3613, -8.4177");
+
+      L.marker([43.3609, -8.4177])
+        .addTo(map)
+        .bindPopup("<b>Mural 1</b><br>Artista: David Pintor");
+    </script>
+  </body>
+</html>
