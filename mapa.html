@@ -7,7 +7,7 @@
   <link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css" />
   <style>
     body { margin: 0; padding: 0; }
-    #map { height: 100vh; width: 100%; }
+    #map { height: 400px; width: 100%; border-radius:12px; }
   </style>
 </head>
 <body>
@@ -18,16 +18,19 @@
   <script>
     const map = L.map('map', { scrollWheelZoom: false }).setView([43.3613, -8.4177], 15);
 
-    // Capa base CARTO Positron (el estilo claro que se ve en tu captura)
+    // Capa base CARTO Positron
     L.tileLayer('https://{s}.basemaps.cartocdn.com/light_all/{z}/{x}/{y}{r}.png', {
       attribution: '&copy; <a href="https://www.openstreetmap.org/">OpenStreetMap</a> | &copy; <a href="https://carto.com/">CARTO</a>',
       subdomains: 'abcd',
-      maxZoom: 19
     }).addTo(map);
 
     // Marcador
     L.marker([43.3613, -8.4177]).addTo(map)
-      .bindPopup("<b>Muíño da Gramela</b><br>A Coruña");
+      .bindPopup("<b>Muíño da Gramela</b><br>Coordenadas: 43.3613, -8.4177");
+
+    L.marker([43.3609, -8.4177]).addTo(map)
+      .bindPopup("<b>Mural 1</b><br>Artista: David Pintor");
+  });
   </script>
 
 </body>
