@@ -27,21 +27,24 @@
     #panel {
       flex: 1;
       background: white;
-      padding: 1rem;
-      border-left: 2px solid #ddd;
+      padding: 1rem 1.5rem;
+      border-left: 2px solid #e0e0e0;
       display: flex;
       flex-direction: column;
       justify-content: space-between;
       overflow-y: auto;
+      box-shadow: inset 0 0 20px rgba(0,0,0,0.05);
     }
 
     #panel-content {
       flex-grow: 1;
+      transition: opacity 1s;
     }
-
+    
     #panel h2 {
       margin-top: 0;
-      color: #333;
+      color: #1E3A8A;
+      font-family: "Montserrat", sans-serif;
     }
 
     #panel img {
@@ -50,18 +53,17 @@
       margin-top: 0.5rem;
     }
 
-    #panel p {
-      font-size: 0.95rem;
-      line-height: 1.4;
-      color: #444;
+    #panel img {
+      width: 100%;
+      border-radius: 12px;
+      margin-top: 0.5rem;
+      box-shadow: 0 2px 8px rgba(0,0,0,0.1);
     }
 
-    .testimonio {
-      background: #f2f2f2;
-      padding: 0.7rem;
-      border-left: 3px solid #999;
-      margin-top: 1rem;
-      font-style: italic;
+    #panel p {
+      font-size: 0.95rem;
+      line-height: 1.5;
+      color: #333;
     }
 
     #frases {
@@ -76,6 +78,30 @@
       padding: 0.5rem;
       border-top: 1px solid #eee;
     }
+
+    .leaflet-popup-content-wrapper {
+      border-radius: 10px;
+      box-shadow: 0 4px 15px rgba(0,0,0,0.2);
+    }
+
+    .leaflet-popup-content h3 {
+      margin-top: 0;
+      color: #1E3A8A;
+      font-family: "Montserrat", sans-serif;
+      font-size: 1.1rem;
+    }
+
+    .leaflet-popup-content p {
+      margin: 0.3rem 0;
+      font-size: 0.9rem;
+      color: #333;
+    }
+
+    .leaflet-popup-content img {
+      width: 100%;
+      border-radius: 8px;
+      margin-top: 0.5rem;
+    }
   </style>
 </head>
 <body>
@@ -85,7 +111,6 @@
     <div id="panel">
       <div id="panel-content">
         <h2>Selecciona un punto no mapa</h2>
-        <p>A información aparecerá aquí cando fagas clic nun marcador.</p>
       </div>
 
       <!-- Frases aleatorias -->
@@ -96,48 +121,57 @@
   <script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js"></script>
   <script>
     document.addEventListener("DOMContentLoaded", function() {
-      const map = L.map('map', { scrollWheelZoom: false }).setView([43.3613, -8.4177], 16);
+      const map = L.map('map', { scrollWheelZoom: false })
+        .setView([43.3613, -8.4177], 17);
 
       L.tileLayer('https://{s}.basemaps.cartocdn.com/light_all/{z}/{x}/{y}{r}.png', {
         attribution: '&copy; <a href="https://www.openstreetmap.org/">OSM</a> | &copy; <a href="https://carto.com/">CARTO</a>',
-        subdomains: 'abcd'
+        subdomains: 'abcd',
+        maxZoom: 19
       }).addTo(map);
 
       const puntos = [
         {
-          nombre: "Emprazamento do antigo muíño",
+          titulo: "Muíño da Gramela",
+          artista: "—",
+          descripcion: <em>"Antigo muíño de vento situado no barrio do Agra do Orzán, símbolo da memoria industrial da cidade."</em>,
           coords: [43.3613, -8.4177],
-          descripcion: "Lugar onde se erguía o antigo muíño da Gramela, hoxe desaparecido. Espazo central na memoria do barrio.",
-          img: "https://upload.wikimedia.org/wikipedia/commons/thumb/e/e4/Molino_de_viento_en_Galicia.jpg/320px-Molino_de_viento_en_Galicia.jpg",
-          testimonio: "«Aquí xogabamos cando eramos cativos, o son do vento no muíño era algo máxico.» — Veciño do Agra"
+          img: "https://www.asociacionbuxa.com/wp-content/uploads/2024/07/20200609-174852.jpg"
         },
         {
-          nombre: "Murais e intervencións artísticas",
+          titulo: "Mural 1",
+          artista: "David Pintor",
+          descripcion: <em>"Aquí a descrición."</em>,
           coords: [43.3609, -8.4177],
-          descripcion: "Diversas intervencións artísticas homenaxean o patrimonio desaparecido e a identidade popular do barrio.",
-          img: "https://upload.wikimedia.org/wikipedia/commons/thumb/f/f8/Mural_art_in_A_Coru%C3%B1a.jpg/320px-Mural_art_in_A_Coru%C3%B1a.jpg",
-          testimonio: "«Os murais lembran o que fomos e o que seguimos a ser.» — Artista local"
-        },
-        {
-          nombre: "Espazos significativos",
-          coords: [43.3617, -8.4165],
-          descripcion: "Pequenas prazas e recunchos cargados de historia e vivencias cotiás dos veciños.",
-          img: "https://upload.wikimedia.org/wikipedia/commons/thumb/8/8a/Praza_de_A_Coru%C3%B1a.jpg/320px-Praza_de_A_Coru%C3%B1a.jpg",
-          testimonio: "«Cada banco, cada árbore, ten unha historia que contar.» — Veciña do barrio"
+          img: "data:image/jpeg;base64,/9j/4AAQSkZJRgABAQAAAQABAAD/2wCEAAkGBxIPDxAPEA8PFhAPFg8OERAVDw8VDxUQFREWFhcVFxYYHiggGRolGxUVITEiJykrLi4uFx8/ODMsNygtLisBCgoKDg0OGhAQGi4hICYvLS8yLy0tLS0tLi0vLS0tLS0tKysrLS0rKy0tLS0tLS0tLS0tKy0uLS0rLS0vLS0tLf/AABEIAPgAywMBIgACEQEDEQH/xAAcAAEAAQUBAQAAAAAAAAAAAAAAAgEEBQYHAwj/xABKEAACAgECAwUEBQYLBQkAAAABAgADEQQSBSExBhNBUWEHInGBMlKRobEUQnKTwfAVI0OCkqKywtHS4SQzU2JjFiVUc4Oks9Px/8QAGgEBAAMBAQEAAAAAAAAAAAAAAAECAwQFBv/EAC0RAAICAgECAwgBBQAAAAAAAAABAhEDEiETUQQUMQUiQWGRodHw8UJScYHB/9oADAMBAAIRAxEAPwDrMRE+VO4REQBERAEREAREQBERAEREAREQBERAEREAREQBERAEREAREQBERAEREAREQBERAERPHW6paarLrCQlStYxAJO1Rk4A6n0kg9oml8X7dLtUaMbmJy7W12IqDwXBwSx+6bVwvV9/p6L9uO/rqu2+W9A2PvkuLXqLLqIiVAiIgCIiAIiIAiIgCIiAIiIAiIgCIiAIiIBjb6WfWVnvCtVFbtb721Stm7mfAkd0R6bieU8tVrdPo6TcbmRe7rrrW6x2XarOa8Lzdnbcy8skqgJzjM0/t/xm6jWpTgdy6V2nDYZwA6quSCBgi49DkOOhAM1DiGtfUWGyw5YliObHG4jPNiT4DxwAABgAAevi6awpNWzt8P7Oy+JkpN1Dv8fn9+52zhnEatVUt9LbqnLhW2spyjlG5MAeTKR8ponH+L8Sve3QNo0qSx3VbyL9hoSzcCLACrMyJnHXmeQxLz2Wa0Gm/Tk+8j98q45BHUA4P6Sk/wA71mc43ZqEay2ulSKK2etmtC1k7dz5Ay273QByxgdRuOOKEYxyU/T5nN4nD08jg36P7fwco7Tdmr9Itdq2PebnVVVq/oZKqmxTyJ3uo549fMenD+LazhGp0o1+rtGksVbV7lq7ajSv5mMAeKA7B0PLPKdZb8n1Wxg1buQ9lDH3htdcd4oB5oQCAfHBwfGaT2drbVcc11Grrptq0lPcorVDulxYhQ1o2cZV+fMnkOfQD0JqKg9o8L6nNKKXozpdbhgGHRgGB9CMiSlAJWeMaiIiQBERAEREAREQBERAEREAREQBERAEREA0H2taAtTp9SoJapzUcddrjcvx95Av/qGc93DAOeTAFT4EHoR59D9k7N2q2Cul7DhEvqBbH0WtV6K29MWWoc+GJr/EdPp9PoNUrsqbPyjRjeVUo+qK3WBGPI5Dhgo6YInp+GjtjR6PhPaLwLp63/s1bsRrmo4hp8EBLi2nsBzgq4yuPXvFr+0+c67rL6663e10StQS7uwVAvjknpOWdkuyNusKah2aqhGSxHAHeu6MGU15GAuQPeIOfDzGT7Z6uvX6ujTqS1VRYOc4QvkFyvPnhUK7vDvOXUzCcFkyJIp7WyY+s5Rd8c/5POnXvR3ttNXdVHu69OznOstRagi7wwO3J3N72WAJ90Hpa9i+1LDXut5rb8rsNDXbEWxLVJWtNw5lCeWD+c4P5xzhu0Wuc6gadLWKVg4fkWLPhgu49cKQM9fXmc49OHsu65bQuMlfdP0kbKuWz1zk5x4jrjndQmk1mfPpxdfvxs8rdOnE77EteF8QTVU131n3LBuAP0gehUjwIOQfhLqcLVOmbiIiQBERAEREAREQBERAEREAREQBERAEREAtOK6BdTp7tO/0L0eonAJG4YyAeWR15+U17iHF0p0j6q+ha7dNqKzq60CMzWAKhdenebqijDPPbgHpgbZOE66vU06qxdbY1l9ZAO4nu2AyUtUchggkg45ZI6gzt8LKlJFJujr3EO0FSaT8qRtyv/F1jmrG0kjYQRlWUhtwIyu1uWRicw4S6ol1lmmD16RFrFrCo1ApWGswCd31AMKea4njqOKEivc/8WCzGvA3d6K9qufP3AVz+j5S94p3lejo09lQXvraQWSzcpO/v3DAgEElWGBkesrHHh5hldX6fBuvh+9zOUp8OKMfpNK5ItvZTb7zbVXbWpY7iAOecZwPQSya8EAOSK6PcYdC9q5GB6cs/wD7MvqGIGAcFiFB8Rk9fkMn5TXOLV7namvogJxnnvYZOSfHpz9Zpi998iXCOsey+uz8jsufITUWtZUp6d2ERNwHgCVPyAPjNxmO7O62vUaSi6lNlToAlf1Qvu7fltxMjOPI7kzaPoIiJQkREQBERAEREAREQBERAEREkCIiQBERAE0T2m8BsuFerq3HuEsrsRa9zFSysGwOZC4bzxu6Y3Gb3EvCbhK0RJWqOEcP4f8AlNN1ofFNYVTcoLDvbGCIAV6nLAnHQA9OUznaFD+SLbRqO9rrspI3d3YAN4QkOuDyDHOc/Kbt2/1x0+lrtChlW6sOm7DMGVwu3ljO8oeeOQM5zr+1FVrGr8iYvaO5djZWo22ZX3ivNvHl6ek6VlnP0wqS72rX1MXBL+qv+mK1F7s1Z3tyYsMdOSt1HQj4y31T7FdwCWbLHqSWx/oJmO4WmojqxXYXIG5jjx/HHQTXeNXEIVXqRz8+fuj+99k6cTUnSRWXB272e66m7h2lFLDKVqHryN6Pk7gQOnPOJlOJ8b0+l5XWhW67QGZ8eZVQSB6nlOLdndB3VCNvcM4DnaxXkRyAxzHLx68z6S37S8T7tDUh9+zkWzz6jJz4n1nK8Knlaj3NN6idd4N230eru7it7BYeSh6yoY+GPjg4z18Jsk+cOwubeJ6Zlz/vqTgZwK1dcD7AP6Bn0fK+JwrFJJE45OS5ERE5jQREQBERAEREARESQIiJAEREkCIiAIiIBovtb1O3S6dc9bTaw81rpf8AvOk5Z2e0S33VNfalSuxfvXUNWj7GKlxke7kKucjGc8sToPteO+zSVZGO71DN8GekfgrD5zSa0woXy5f4mez4RVhXzs5Mj98uOP39zcarmrBRQxZLVsqIPQqy+fkQDy6dM6rqAO9V9x252kHmwCtjA8T4Hz5S/wBQ4LnONoyT8By/DP2yxBBwWPJ1dj582U5+AwJvjxRh6FHKzIcS4qKxtQZY9MjAA88dZgrHNrbmb3jgZOepbkAPADPh+2XGm4VfepenT6i0blTclTtliC2PdyScKfkDOo9jPZewxdr8KOTLp1xvzjq7jp48h0yeYlJzx4Fz6lknNkvZH2a2sdWynbXlUJ/OtK7SR6KpI+Lek6rPPT0LWi11qqog2qoGFA9BPSeNlyPJLZnVGOqoRETMsIiIAiIgCIiAViSxGJpqQRiSxGI1BGJLEYjUEYksRiNQRiSxLfiF/dU22/8ACSyz+ipP7IUbFnH+2nERqdfc4OUp/wBlrPpWTvPzs3/EATBWthSfIHnKUHKqT1YbifU8z95njrrOi+fM/D9/uBnuQiopRRxN27McKTadnTd18wg6feeXpnylbadjHHVUUBeWAxOcf0gPkZf8PT3S56uT8lBIH7T8SZaqN1rHxYg58h9FR9m4mXsqdO9jJPd68HwtqHyNW79pnR5w3gfH7+HWPbQtbraEFtLkqG25wysAdrc8dCJ2PhvFku0um1T7ahqUpsVXdQQ1qgqmfE8/nPK8Vie+3wZ1YpKqL+JLEYnLqakYlLrFRWd2CqoLMxOFCjqSfAS00/F9Paa1TUUs1wc1qLF3uE+ltXqcePlJ0YsvIksRiRqLIxJYjEaiyMSWIxGoK4jEliVxNtStkMRiTxGI1FkMRiSiNRZHEYk8SkaiyOJje0w/2HWf+RqP/jaZTExPa63Zw7WsfCi8fM1kD7yJaMfeRDfBwvT8kXP5ox9nLP3S2qXe5J6Hn/N8B88Y+APnJa19qqgyScKFHVsDp6DlzPkJX/dqEBU2vzyThNx5FmPgo5fICeschNhjvR1QAOQRyXc2058wWYH5+olvpU9/n1Un+wP807HwLs7p7OHjQsji6sJbdY9ID/lFlZU2g80cEb191iNvLM5vx3g9mh1Jpurw1mWSxcmqxB0IbzxyIODy8sE5wyqTaLONcmE4kQWVWJCDDORnkDkbvkMn7JuvtK40GC0VbkppRQF2lWUMAF3KQCpAwdp8NuQCCBpGuQmwABiG2ZIHRd3M/h9s9NbbucV9cYZh5kn3R8+vylnBNp9iLpM6J2y7cd8tdGjtI7xRZfbW/MAjPdrYPxXB6dOczXs/7TV26IpqNQvfaTNdrW2AOUydjkk88gYz449ZyfTVBRnl6eXqf2fL1nlZZ7+4cm5oD0OD1GfLzmT8PFx1RbqO7N59oXajvx3C7lpQl7UPIkj6K2Dz6MUP0fdz72QukdjOIpTxLRWNyJtRMnOcWMK+vwY/fLTWuGAq8PdB+/8AwJ+UzXss1tS8WqFqow1CX6ZSyghXfFikbumQCn88zRQUMbS7Fb2kd/xGJOUxPK1OuyOIxJRGosjiMSWJXEaiyUSWIxOjUqRiSxGI1BHESWIxGoIxJYjEagjiah7U7ynDSo/lrdPUf0d+8/2JuOJo3tgYDh9YPVr68fHu7JfHH3kVk+Dk9zhDnqzclH+HkP38pHR6ZndVVS9tzBEUdWc9APQDP3zxqIYm1j7p6eW3wA/f9szXZEq+u072WGoKx7u0fmWkEJu80JIVh0IY8wOc7XwjnOy9lODnRaSuhm3OMs7eG5jnav8AyjkB8JLtNwCviGnaizk30qrQMvXYOjD54yPGZPSljWhsCiwqpdVOVDkDcAfEZzPXE4Obs6aVUcG4n2b12lJWzSO+3OLKg71OPMYBIz5H/Wa/o9EysxtVlck5rIO/cFyc59MHlywR4Hn9My21fDqbs97TU+duSyKT7udvM8+W5seWTN1mfxRm8Z84ObLMgLtXwORkj9k87FFfLJZz4nwHkAOg/GfQFnZHRsctRu8fetuP4t908B2F4bv3/kOnJLbzmsHJ2hRnPgMZx0zzIJ5y/WXYr02cEo0hb3VVmtIcqqgs/MY5Acz/AKzy4twTV6JqNU1FtSlwabLEKEWVkWKGB5gjwz1C8uhn03otBVQuymmqtfq11og+xRNN9s+qSvhFqsFL3PVXXnGQwbexHqER/tiOZuSVB46V2bZwfiC6rTUalPo3oloHiNy5wfUHl8peTXvZ1SU4RoFbr3KN8myw+4ibHicsoU2jZPgjEliMSNSSMSWIxGoJYjErE31KWUxGJWI1FlMRiViNRZTEYlYjUWUxOWe2fXZfSaUHmu7UOP0spX/ZsPy9Z1ScE7daxtVxLVsG91HOnQ9QBUoQ/wBcMfmZfHHmys3wa+o3naPor1P7PjKv75Fa9CQg8ixOB95/flKWOAO7ToOTN+/jMt2P0Hfa/SVkZHe0uw/5a3DkHHh7uPnNjE+hNuOXlyjElKTm1OiymIxKxGospiMSsRqLKYmB7U9ktPxPuBqe9KadmsFauFR9wAIflkjl4EHmefOZ+ISrlB8kEQKAoAAAAAAwAB0AEliViNRZTEYlYjUWUxGJWI1FksRiTibalbIYjEniI1FkcRiSiNRZDEYk54azV10VtbdYiVpzZ3YKo+ZjUWVufYrP9UM32DM+Y11JZFK4Jf33fkFLnmx+ZyfnOidt/aruR6OGg+8Cp1TKQ3Pl/FJ1/nNj0H5w5p2d7L6niN6U0Ve77oawgmqtfrWMOXgTjqcYHppGFGcpWeygLjJA8hyE3/2N6cXavUWgctMtYL8/pWb8IPP6OSfDA8+WHr9knEHexUNVVIsdAbrRveredtm2oN1XGVJXy9Z17sd2Xq4XpzRUzMXbvLLGCgs+0LyA+ioAGBz+J6w6EVyZzEpiTiZ6mlkMRiTiNRZHEpiTiNRZDEYk4jUWQxGJOI1FkMRiTiNRZDEYk4jUWViSia0VsjElEULIxJRFCyM5N2q7GcY4nq3Nt2mXTJY/cVmxu7FWSFYIqnLkYyW8z4YnW4kpUQ+TmHBfY9QmH1mostbOTXX/ABVR9GPNm+RUek6Hw7h1WmrFVNYRB4DJJOMZJPNjgDmT4CXkQ7YVIjElEiibIxPKjVV2b9liN3ZKPhgSrAkEN5HkfsloON0kMyPvWsB3ZMFFrKht5bpjac4zk4OAcRqLMhEtV4hWScHkqtYW2uAUHUocYceeDyyPMT20uoW1FsQkqwyCVZTj4HnGos9IlknEgbNRX3dn+zBCz7QVYsm/avPJYDHL1EnZrSHStanZmCs4BrxUrZwz5Ycsqw93P0TGosuoljreKClrN1dhrqQXWWg17FX385ywPIJnkDyInjVxHUOtbDRMO8r73a1yBkICnu7ORAc7uQBI905KxqLMpEqpyAefPnz6ysULIxJRFCyMSURQswv/AGiX/wAPqP8A2/8A9kqe0SD+Q1H2U/55honl+dym3TRmR2lp+pqP1FkqO0dP1dR+osmFiPO5B00Zsdoqfq38v+i/7mUbtJQOvejP/SeYWJPncg6aM2vaOg9Bd+otx+EmnH6Ty/jfnTYB9pEwMR53J8h0kZ48foHUuPjU4H24kB2k0x6WMf0a3b8AZhIjz2Tsh0kZ9ePUHxs/UXD+7JjjVH125eddg/ZNdiPPZOyHSRk6+IaJFdBbysdrnGbSzM1m8g+O3PLb0xy6T2PGtIQw5lbAd4/Jr2VgRg5wmDymGzEnz2Tsh0kZ1+KaVxhjyKtXg0Wj3GAyvNehwOXpPX+GNOoA7wAdANrgYA+E12I89k7L7/kdJGcp45pcsUtzvO8kJaQTtAznHkB9k914xQeln9SwfiJrkSfPz7IjpI2J+MadclrVA8SVYDp4nEoOOac9LQfgrn8BNeiPPz7IdJGyni1P1/6ln+Eg3G6B+e36q4/gs12JPn5dkOkjYl41Qfz2+dVw/FZL+F6P+KPmrj8RNbiPPy7DpIzz9odMGVe9JLZxtrtYcuvNVIHWen8NUfXb9Vd/lmuxHn5f2jpLuIiJwGoiIgCIiAYrX8KsssNia3UICMd0CndDl1XADA/Ekc+ksKeDa1CccStZfAOKCeo55FXp982SJdTa/gijCPwzUupV9ZZg43BTQuR4jcKdwz5gg+RExmo7I2MMrqtWrDp/3lrChHkcgn7DNuiSskl6DVGs6Ds5egy2ts3nP8prXQDHgGuH4S2Ts5xAMxbijkEjaF3IAPEYfeT/AEpt8R1ZfqI1Rrej4Hq0Xa/ELnBJYktlgfIEKDjkPtM8+I8G4izKdPxQVrghlbTVWc88iCwzNoiOo7vj6InVGq6XhPFl+lxWh/RtBXj+qVPn4z3/AIL4kWyeK1AZztXh1eAPIFnJmxxHUfZfRfgamBHC9d0PFeXmNBpw/wBpJH3SacK1Y68UuPx0ui/YkzcSN38vovwKMQ3C9QTk8S1AHL3Vo0IHrzaome9PDWXG7V6t8czuNAB5dDsrX48pkIkbP9SFEKk28tzH4nJ+2TiJUkREQBERAEREARKRAKxEQBERAESkQCsREAREQBERAEREARKRAKxEQBEpEArERAP/2Q=="
         }
       ];
 
       // --- Mostrar datos do punto no panel ---
       const panel = document.getElementById('panel-content');
+
       puntos.forEach(p => {
         const marker = L.marker(p.coords).addTo(map);
-        marker.on('click', () => {
-          panel.innerHTML = `
-            <h2>${p.nombre}</h2>
-            <img src="${p.img}" alt="${p.nombre}">
+        marker.bindPopup(`
+          <div class="popup-content">
+            <h3>${p.titulo}</h3>
+            <p><strong>Artista:</strong> ${p.artista}</p>
             <p>${p.descripcion}</p>
-            <div class="testimonio">${p.testimonio}</div>
-          `;
+            <img src="${p.img}" alt="${p.titulo}">
+          </div>
+        `);
+
+        marker.on('click', () => {
+          panel.style.opacity = 0;
+          setTimeout(() => {
+            panel.innerHTML = `
+              <h2>${p.titulo}</h2>
+              <p><strong>Artista:</strong> ${p.artista}</p>
+              <p>${p.descripcion}</p>
+              <img src="${p.img}" alt="${p.titulo}">
+            `;
+            panel.style.opacity = 1;
+          }, 300);
         });
       });
 
@@ -149,13 +183,13 @@
         "Así estamos, que non temos un lugar verde, só casas",
         "A festra do meu pai daba á de fronte ó muíño",
         "No había muchos más espacios que ese para jugar",
-        "Nos dejaban hacer la hoguera de San Juan",
-        "Desmontar se desmontó, pero nunca más se volvió a montar",
-        "El caso es que no se respetó la historia del molino",
-        "Tenemos la Torre de Hércules, pero también teníamos ese molino",
-        "Parecía que estábamos en otro mundo",
-        "O muíño era un conxunto: a plataforma, as pedras o recinto. E cumpría unha función no barrio",
-        "Yo cuando abría la ventana lo veía"
+        "Nos deixaban facer a fogueira de San Xoán",
+        "Desmontar se desmontou, pero nunca máis se volveu montar",
+        "O caso é que non se respectou a historia do muíño",
+        "Temos a Torre de Hércules, pero tamén tiñamos ese muíño",
+        "Parecía que estabamos noutro mundo",
+        "O muíño era un conxunto: a plataforma, as pedras, o recinto... e cumpría unha función no barrio",
+        "Eu cando abría a xanela, víao"
       ];
 
       const bloque = document.getElementById("frases");
