@@ -3,34 +3,63 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Mapa da Memoria</title>
+  <title>Mapa Interactivo</title>
   <link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css" />
   <style>
-    body { margin: 0; padding: 0; }
-    #map { height: 400px; width: 100%; border-radius:12px; }
+    body {
+      margin: 0;
+      padding: 0;
+      background-color: #f8f9fa;
+      font-family: Arial, sans-serif;
+    }
+
+    h2 {
+      text-align: left;
+      color: #1a347a;
+      margin: 30px 10%;
+    }
+
+    #map {
+      width: 80%;
+      height: 450px; /* altura proporcional al ancho */
+      margin: 0 auto 40px auto;
+      border-radius: 12px;
+      box-shadow: 0 2px 10px rgba(0,0,0,0.15);
+    }
   </style>
 </head>
 <body>
 
+  <h2>Mapa Interactivo</h2>
   <div id="map"></div>
 
   <script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js"></script>
   <script>
-    const map = L.map('map', { scrollWheelZoom: false }).setView([43.3613, -8.4177], 15);
+    // Inicializar mapa centrado en A Coruña
+    const map = L.map('map', { scrollWheelZoom: false }).setView([43.3613, -8.4177], 17);
 
-    // Capa base CARTO Positron
+    // Capa base estilo claro de Carto
     L.tileLayer('https://{s}.basemaps.cartocdn.com/light_all/{z}/{x}/{y}{r}.png', {
       attribution: '&copy; <a href="https://www.openstreetmap.org/">OpenStreetMap</a> | &copy; <a href="https://carto.com/">CARTO</a>',
       subdomains: 'abcd',
+      maxZoom: 19
     }).addTo(map);
 
-    // Marcador
-    L.marker([43.3613, -8.4177]).addTo(map)
-      .bindPopup("<b>Muíño da Gramela</b><br>Coordenadas: 43.3613, -8.4177");
+    // Marcadores
+    const puntos = [
+      {
+        coords: [43.36208, -8.41652],
+        texto: "<b>Muíño da Gramela</b><br>Antigo emprazamento do muíño"
+      },
+      {
+        coords: [43.36140, -8.41620],
+        texto: "<b>Mural 1</b><br>David Pintor"
+      }
+    ];
 
-    L.marker([43.3609, -8.4177]).addTo(map)
-      .bindPopup("<b>Mural 1</b><br>Artista: David Pintor");
-  });
+    puntos.forEach(p => {
+      L.marker(p.coords).addTo(map).bindPopup(p.texto);
+    });
   </script>
 
 </body>
