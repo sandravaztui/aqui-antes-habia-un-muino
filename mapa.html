@@ -19,7 +19,7 @@
 
     #map {
       height: 80vh;
-      width: 90%;
+      width: 100%;
       max-width: 1000px;
       border-radius: 16px;
       box-shadow: 0 4px 12px rgba(0,0,0,0.1);
@@ -33,7 +33,7 @@
   <script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js"></script>
   <script>
     // Crear mapa centrado en A Coruña
-    const map = L.map('map', { scrollWheelZoom: false }).setView([43.3613, -8.4177], 16);
+    const map = L.map('map', { scrollWheelZoom: false }).setView([43.3613, -8.4177], 20);
 
     // Capa base CARTO Positron (estilo claro)
     L.tileLayer('https://{s}.basemaps.cartocdn.com/light_all/{z}/{x}/{y}{r}.png', {
