@@ -46,9 +46,10 @@
       color: #1E3A8A;
     }
 
+    /* 🔹 Imagen del panel lateral: ajustada y proporcionada */
     #panel img {
       width: 100%;
-      max-height: 50%;
+      max-height: 45vh; /* nunca más de la mitad de la pantalla */
       border-radius: 12px;
       margin-top: 0.5rem;
       box-shadow: 0 2px 8px rgba(0,0,0,0.1);
@@ -77,6 +78,11 @@
     .leaflet-popup-content-wrapper {
       border-radius: 10px;
       box-shadow: 0 4px 15px rgba(0,0,0,0.2);
+      max-width: 280px; /* límite para evitar popups demasiado grandes */
+    }
+
+    .leaflet-popup-content {
+      overflow: hidden;
     }
 
     .leaflet-popup-content h3 {
@@ -91,10 +97,14 @@
       color: #333;
     }
 
+    /* 🔹 Imagen del popup: se adapta sin generar scroll */
     .leaflet-popup-content img {
+      display: block;
       width: 100%;
+      max-height: 30vh; /* visible sin scroll */
       border-radius: 8px;
       margin-top: 0.5rem;
+      object-fit: cover;
     }
   </style>
 </head>
