@@ -6,6 +6,7 @@
   <title>Mapa da Memoria</title>
   <link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css" />
   <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css">
+  
   <style>
     html, body {
       margin: 0;
@@ -41,9 +42,28 @@
       flex-grow: 1;
       transition: opacity 1s;
     }
-    
+
     #panel h2 {
-      margin-top: 0;
+      font-weight: bold;
+      font-size: x-large;
+      color: #1E3A8A;
+      margin-bottom: 0.3rem;
+    }
+
+    #panel .artista {
+      font-weight: bold;
+      font-size: larger;
+      color: #1E3A8A;
+      margin-bottom: 0.3rem;
+      text-transform: uppercase;
+      letter-spacing: 0.5px;
+    }
+
+    #panel .titulo {
+      font-weight: bold;
+      font-size: large;
+      font-style: italic;
+      margin-bottom: 0.8rem;
       color: #1E3A8A;
     }
 
@@ -156,6 +176,29 @@
       background: #f1f1f1;
     }
 
+    .artist-info {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+    }
+
+    .artist-links {
+      display: flex;
+      gap: 10px;
+    }
+
+    .icon-link i {
+      font-size: 20px;
+      cursor: pointer;
+      transition: 0.2s ease-in-out;
+      color: #444; /* Gris oscuro */
+    }
+
+    .icon-link i:hover {
+      transform: scale(1.2);
+      color: #ff6600; /* Naranja oscuro al pasar cursor */
+    }
+
   </style>
 </head>
 <body>
@@ -185,95 +228,133 @@
 
       const puntos = [
         {
-          titulo: "Muíño da Gramela, 1788",
-          descripcion: `<em>Antigo muíño de vento situado no barrio do Agra do Orzán, símbolo da memoria industrial da cidade.</em>`,
+          titulo: "<em>O Muíño da Gramela, 1788</em>",
+          descripcion: `Antigo muíño de vento situado no barrio do Agra do Orzán, símbolo da memoria industrial da cidade.`,
           coords: [43.3613, -8.4177],
           img: "https://www.asociacionbuxa.com/wp-content/uploads/2024/07/20200609-174852.jpg"
         },
         {
-          titulo: "<em>Aquí antes había un muíño</em>, 2025",
           artista: "Gerardo Borrás e Érica Paolucci",
-          descripcion: `<em>Obra que retoma o espíritu de Sargadelos (nas cores e tipografías) para crear unha identidade nova desta historia sobre este patrimonio barrial</em>`,
+          titulo: "<em>Aquí antes había un muíño. 2025</em>",
+          descripcion: `Obra que retoma o espíritu de Sargadelos (nas cores e tipografías) para crear unha identidade nova desta historia sobre este patrimonio barrial`,
+          instagram: [
+            "https://www.instagram.com/geraborras?utm_source=ig_web_button_share_sheet&igsh=ZDNlZDc0MzIxNw==",
+            "https://www.instagram.com/eri_papupi?utm_source=ig_web_button_share_sheet&igsh=ZDNlZDc0MzIxNw=="],
           coords: [43.3613, -8.4176],
           img: "https://raw.githubusercontent.com/sandravaztui/aqui-antes-habia-un-muino/main/mural-gerardo-borras-y-erica-paolucci-avenida-gramela-16.jpg"
         },
         {
-          titulo: "<em>Muíño da Gramela</em>, 2025",
           artista: "David Pintor",
-          descripcion: `<em>Este é, inda que non o pareza, un mural onírico. Nel aparece o muíño da Gramela como un punto de referencia máis da cidade como o é a Torre de Hércules ou o depósito de augas de Monte Alto. Así tamén o pintou Picasso no seu momento, coma un punto singular. No deseño, o muíño dialoga coa cidade pedindo esa "incorporación" á paisaxe coruñesa, inda que só sexa, de momento, a través da memoria. <br>O muíño aparece coronando un espazo verde enorme, que é o que pide un barrio castigado por un urbanismo demasiado duro. Un espazo verde no que estar, no que vivir, e que dignifique unha zona da Coruña esquecida e fora dos plans máis ambiciosos.</em>`,
+          titulo: "<em>Muíño da Gramela. 2025</em>",
+          descripcion: `Este é, inda que non o pareza, un mural onírico. Nel aparece o muíño da Gramela como un punto de referencia máis da cidade como o é a Torre de Hércules ou o depósito de augas de Monte Alto. Así tamén o pintou Picasso no seu momento, coma un punto singular. No deseño, o muíño dialoga coa cidade pedindo esa "incorporación" á paisaxe coruñesa, inda que só sexa, de momento, a través da memoria. <br>O muíño aparece coronando un espazo verde enorme, que é o que pide un barrio castigado por un urbanismo demasiado duro. Un espazo verde no que estar, no que vivir, e que dignifique unha zona da Coruña esquecida e fora dos plans máis ambiciosos.`,
+          instagram: "https://www.instagram.com/davidpintor1975?utm_source=ig_web_button_share_sheet&igsh=ZDNlZDc0MzIxNw==",
+          web: "https://www.davidpintor.com/",
           coords: [43.3611,-8.4174],
           img: "https://raw.githubusercontent.com/sandravaztui/aqui-antes-habia-un-muino/main/mural-david-pintor-alcalde-lens-1.jpg"
         },
         {
-          titulo: "<em>O espírito do muíño</em>, 2025",
           artista: "Dime Plaga",
-          descripcion: `<em>A identidade do barrio vive na súa historia e na súa xente, en quen o habita hoxe, en quen tivemos a fortuna de facelo e nos fitos que marcaron o seu camiño. O barrio regálanos un sentimento de pertenza que nos acompaña para sempre, sen importar a distancia. Os seus espíritos seguen aí, percorrendo as súas rúas e habitando as historias que aínda quedan por contar.</em>`,
+          titulo: "<em>O espírito do muíño. 2025</em>",
+          descripcion: `A identidade do barrio vive na súa historia e na súa xente, en quen o habita hoxe, en quen tivemos a fortuna de facelo e nos fitos que marcaron o seu camiño. O barrio regálanos un sentimento de pertenza que nos acompaña para sempre, sen importar a distancia. Os seus espíritos seguen aí, percorrendo as súas rúas e habitando as historias que aínda quedan por contar.`,
+          instagram: "https://www.instagram.com/dimeplaga?utm_source=ig_web_button_share_sheet&igsh=ZDNlZDc0MzIxNw==",
+          web: "https://www.davidpintor.com/",
           coords: [43.3620,-8.4205],
           img: "https://raw.githubusercontent.com/sandravaztui/aqui-antes-habia-un-muino/main/mural-dime-plaga-praza-do-comercio-6.jpg"
         },
         {
-          titulo: "<em>Sen título</em>",
           artista: "Julia Abalde",
-          descripcion: `<em>Aquí a descrición.</em>`,
+          titulo: "<em>Sen título. 2025</em>",
+          descripcion: `Aquí a descrición.`,
           coords: [43.3617,-8.4185]
         },
         {
-          titulo: "<em>Sen título</em>",
           artista: "Cuchiflainas",
-          descripcion: `<em>Aquí a descrición.</em>`,
+          titulo: "<em>Sen título. 2025</em>",
+          descripcion: `Aquí a descrición.`,
           coords: [43.3614,-8.4185]
         },
         {
-          titulo: "<em>Sen título</em>",
           artista: "Mónica Coto",
-          descripcion: `<em>Aquí a descrición.</em>`,
+          titulo: "<em>Sen título. 2025</em>",
+          descripcion: `Aquí a descrición.`,
           coords: [43.3619,-8.4202]
         },
         {
-          titulo: "<em>Sen título</em>",
           artista: "Laprizlázuli",
-          descripcion: `<em>Aquí a descrición.</em>`,
+          titulo: "<em>Sen título. 2025</em>",
+          descripcion: `Aquí a descrición.`,
           coords: [43.3619,-8.4195]
         }
       ];
 
-      const panel = document.getElementById('panel-content');
-
-      puntos.forEach(p => {
-        const artistaHTML = p.artista ? `<p><strong>Artista:</strong> ${p.artista}</p>` : "";
-        const descripcionHTML = p.descripcion ? `<p class="descripcion">${p.descripcion}</p>` : "";
-        const imgHTML = p.img ? `
-          <div class="img-wrapper">
-            <img src="${p.img}" alt="${p.titulo}">
-            <div class="zoom-btn"><i class="fa-solid fa-magnifying-glass-plus"></i></div>
-          </div>
-        ` : "";
-
-        const popupHTML = `
-          <div class="popup-content">
-            <h3>${p.titulo}</h3>
-            ${artistaHTML}
-            ${descripcionHTML}
-            ${imgHTML}
-          </div>
-        `;
-
-        const marker = L.marker(p.coords).addTo(map);
-        // marker.bindPopup(popupHTML);
-
-        marker.on('click', () => {
-          panel.style.opacity = 0;
-          setTimeout(() => {
-            panel.innerHTML = `
-              <h2>${p.titulo}</h2>
-              ${artistaHTML}
-              ${descripcionHTML}
-              ${imgHTML}
-            `;
-            panel.style.opacity = 1;
-          }, 300);
-        });
+      const iconNaranja = L.icon({
+        iconUrl: "https://raw.githubusercontent.com/pointhi/leaflet-color-markers/master/img/marker-icon-orange.png",
+        shadowUrl: "https://cdnjs.cloudflare.com/ajax/libs/leaflet/1.9.4/images/marker-shadow.png",
+        iconSize: [25, 41],
+        iconAnchor: [12, 41]
       });
+
+      const panel = document.getElementById("panel-content");
+
+        puntos.forEach(p => {
+          const marker = L.marker(
+            p.coords,
+            p.titulo.includes("O Muíño da Gramela") ? { icon: iconNaranja } : {}
+          ).addTo(map);
+
+          marker.on("click", () => {
+            const artista = p.artista ? `
+              <div class="artist-info">
+                <div class="artista">${p.artista}</div>
+                <div class="artist-links">
+
+                  ${
+                    p.instagram 
+                      ? Array.isArray(p.instagram)
+                        ? p.instagram.map(link => 
+                            `<a href="${link}" target="_blank" class="icon-link">
+                              <i class="fa-brands fa-instagram"></i>
+                            </a>`
+                          ).join("")
+                        : `<a href="${p.instagram}" target="_blank" class="icon-link">
+                            <i class="fa-brands fa-instagram"></i>
+                          </a>`
+                      : ""
+                  }
+
+                  ${
+                    p.web 
+                      ? Array.isArray(p.web)
+                        ? p.web.map(link => 
+                            `<a href="${link}" target="_blank" class="icon-link">
+                              <i class="fa-solid fa-globe"></i>
+                            </a>`
+                          ).join("")
+                        : `<a href="${p.web}" target="_blank" class="icon-link">
+                            <i class="fa-solid fa-globe"></i>
+                          </a>`
+                      : ""
+                  }
+
+                </div>
+              </div>
+            ` : "";
+
+            const titulo = p.titulo ? `<div class="titulo">${p.titulo}</div>` : "";
+            const descripcion = p.descripcion ? `<p class="descripcion">${p.descripcion}</p>` : "";
+            const img = p.img ? `
+              <div class="img-wrapper">
+                <img src="${p.img}">
+                <div class="zoom-btn"><i class="fa-solid fa-magnifying-glass-plus"></i></div>
+              </div>` : "";
+
+            panel.style.opacity = 0;
+            setTimeout(() => {
+              panel.innerHTML = `${artista}${titulo}${descripcion}${img}`;
+              panel.style.opacity = 1;
+            }, 300);
+          });
+        });
 
       // --- Frases aleatorias ---
       const frases = [
@@ -309,21 +390,17 @@
       setInterval(cambiarFrase, 5000);
       // Evento para ampliar imagen
       document.addEventListener("click", e => {
-        if (
-          (e.target.tagName === "IMG" && e.target.closest("#panel")) ||
-          e.target.closest(".zoom-btn")
-        ) {
+        if ((e.target.tagName === "IMG" && e.target.closest("#panel")) || e.target.closest(".zoom-btn")) {
           const img = e.target.closest(".img-wrapper").querySelector("img");
-          const modal = document.getElementById("modal-img");
-          modal.style.display = "flex";
-          modal.querySelector("img").src = img.src;
+          document.getElementById("modal-img").style.display = "flex";
+          document.getElementById("modal-img").querySelector("img").src = img.src;
         }
       });
 
       // Cerrar modal al hacer clic
       document.getElementById("modal-img").addEventListener("click", () => {
         document.getElementById("modal-img").style.display = "none";
-        });
+      });
     });
   </script>
 
