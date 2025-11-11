@@ -186,6 +186,16 @@
       color: #ff6600; /* Naranja oscuro al pasar cursor */
     }
 
+    .icon-muino {
+      animation: spin 10s linear infinite;
+      filter: drop-shadow(0 0 6px rgba(255, 215, 0, 0.6));
+    }
+    
+    @keyframes spin {
+      0% { transform: rotate(0deg) scale(1.05); }
+      100% { transform: rotate(360deg) scale(1.05); }
+    }
+
   </style>
 </head>
 <body>
@@ -284,14 +294,24 @@
         iconSize: [25, 41],
         iconAnchor: [12, 41]
       });
+      const iconMuino = L.icon({
+        iconUrl: "https://upload.wikimedia.org/wikipedia/commons/8/8e/Windmill_icon.svg",
+        iconSize: [60, 60],
+        iconAnchor: [30, 55],
+        popupAnchor: [0, -40],
+        className: "icon-muino"
+      });
 
       const panel = document.getElementById("panel-content");
 
         puntos.forEach(p => {
           const marker = L.marker(
             p.coords,
-            p.titulo.includes("O Muíño da Gramela") ? { icon: iconNaranja } : {}
+            p.titulo.includes("O Muíño da Gramela")
+              ? { icon: iconMuino }   // molino especial
+              : { icon: iconNaranja } // marcador normal
           ).addTo(map);
+
 
           marker.on("click", () => {
             const artista = p.artista ? `
