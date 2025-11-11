@@ -187,6 +187,8 @@
     }
 
     .icon-muino {
+      width: 60px;
+      height: 60px;
       animation: spin 10s linear infinite;
       filter: drop-shadow(0 0 6px rgba(255, 215, 0, 0.6));
     }
@@ -195,7 +197,6 @@
       0% { transform: rotate(0deg) scale(1.05); }
       100% { transform: rotate(360deg) scale(1.05); }
     }
-
   </style>
 </head>
 <body>
@@ -287,19 +288,13 @@
           coords: [43.3619,-8.4195]
         }
       ];
-
-      const iconNaranja = L.icon({
-        iconUrl: "https://raw.githubusercontent.com/pointhi/leaflet-color-markers/master/img/marker-icon-orange.png",
-        shadowUrl: "https://cdnjs.cloudflare.com/ajax/libs/leaflet/1.9.4/images/marker-shadow.png",
-        iconSize: [25, 41],
-        iconAnchor: [12, 41]
-      });
-      const iconMuino = L.icon({
-        iconUrl: "https://upload.wikimedia.org/wikipedia/commons/8/8e/Windmill_icon.svg",
+      
+      const iconMuino = L.divIcon({
+        html: `<img src="https://upload.wikimedia.org/wikipedia/commons/8/8e/Windmill_icon.svg" class="icon-muino">`,
+        className: "",
         iconSize: [60, 60],
         iconAnchor: [30, 55],
-        popupAnchor: [0, -40],
-        className: "icon-muino"
+        popupAnchor: [0, -40]
       });
 
       const panel = document.getElementById("panel-content");
@@ -308,8 +303,8 @@
           const marker = L.marker(
             p.coords,
             p.titulo.includes("O Muíño da Gramela")
-              ? { icon: iconMuino }   // molino especial
-              : { icon: iconNaranja } // marcador normal
+              ? { icon: iconMuino }
+              : {}
           ).addTo(map);
 
 
