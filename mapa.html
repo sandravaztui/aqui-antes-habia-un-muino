@@ -356,8 +356,10 @@
             const ubicacion = p.ubicacion ? `<p><strong>📍 ${p.ubicacion}</strong></p>` : "";
             const img = p.img ? `
               <div class="img-wrapper">
-                <img src="${p.img}">
-                <div class="zoom-btn"><i class="fa-solid fa-magnifying-glass-plus"></i></div>
+                <a href="${p.img}" class="glightbox" data-gallery="muinos">
+                  <img src="${p.img}">
+                  <div class="zoom-btn"><i class="fa-solid fa-magnifying-glass-plus"></i></div>
+                </a>
               </div>` : "";
 
             panel.style.opacity = 0;
