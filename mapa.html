@@ -238,7 +238,7 @@
           artista: "Julia Abalde",
           titulo: "<em>Sen título. 2025</em>",
           descripcion: `Aquí a descrición.`,
-          coords: [43.3617,-8.4185], 
+          coords: [43.3615,-8.4185], 
           ubicacion: "AVENIDA GRAMELA 23 BAIXO. Cociña Tacos Niño Rey"
         },
         {
@@ -252,7 +252,7 @@
           artista: "Mónica Coto",
           titulo: "<em>Sen título. 2025</em>",
           descripcion: `Aquí a descrición.`,
-          coords: [43.3619,-8.4202],
+          coords: [43.3608,-8.4163],
           ubicacion: "CANCELA DE AFUERA 5. Nails Studio Vip"
         },
         {
@@ -326,9 +326,44 @@
         });
       });
 
-      document.getElementById("modal-img").addEventListener("click", () => {
-        document.getElementById("modal-img").style.display = "none";
-      });
+        document.body.addEventListener('click', function (e) {
+          const zoomBtn = e.target.closest('.zoom-btn');
+          if (!zoomBtn) return;
+        
+          // encontrar la imagen dentro del mismo .img-wrapper
+          const wrapper = zoomBtn.closest('.img-wrapper');
+          if (!wrapper) return;
+          const img = wrapper.querySelector('img');
+          if (!img) return;
+        
+          const modal = document.getElementById('modal-img');
+          modal.querySelector('img').src = img.src;
+          modal.style.display = 'flex';
+          // evita que el click burbujee y cierre inmediatamente (por si hay listeners)
+          e.stopPropagation();
+        });
+        
+        document.getElementById('modal-img').addEventListener('click', function (e) {
+          // si se hace click sobre el fondo (el propio modal) lo cerramos
+          if (e.target === this) {
+            this.style.display = 'none';
+            this.querySelector('img').src = '';
+          }
+        });
+        
+        document.querySelector('#modal-img img').addEventListener('click', function (e) {
+          e.stopPropagation();
+        });
+        
+        document.addEventListener('keydown', function(e) {
+          if (e.key === 'Escape') {
+            const modal = document.getElementById('modal-img');
+            if (modal && modal.style.display === 'flex') {
+              modal.style.display = 'none';
+              modal.querySelector('img').src = '';
+            }
+          }
+        });
     });
   </script>
 </body>
