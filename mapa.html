@@ -3,7 +3,7 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Mapa da Memoria</title>
+  <title>Mapa dos murais</title>
   <link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css" />
   <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css">
   
@@ -92,29 +92,10 @@
       max-width: 280px;
     }
 
-    .leaflet-popup-content {
-      overflow: hidden;
-    }
-
     .leaflet-popup-content h3 {
       margin-top: 0;
       color: #1E3A8A;
       font-size: 1.1rem;
-    }
-
-    .leaflet-popup-content p {
-      margin: 0.3rem 0;
-      font-size: 0.9rem;
-      color: #333;
-    }
-
-    .leaflet-popup-content img {
-      display: block;
-      width: 100%;
-      max-height: 30vh;
-      border-radius: 8px;
-      margin-top: 0.5rem;
-      object-fit: cover;
     }
 
     #modal-img {
@@ -178,27 +159,16 @@
       font-size: 20px;
       cursor: pointer;
       transition: 0.2s ease-in-out;
-      color: #444; /* Gris oscuro */
+      color: #444;
     }
 
     .icon-link i:hover {
       transform: scale(1.2);
-      color: #ff6600; /* Naranja oscuro al pasar cursor */
-    }
-
-    .icon-muino {
-      width: 60px;
-      height: 60px;
-      animation: spin 10s linear infinite;
-      filter: drop-shadow(0 0 6px rgba(255, 215, 0, 0.6));
-    }
-    
-    @keyframes spin {
-      0% { transform: rotate(0deg) scale(1.05); }
-      100% { transform: rotate(360deg) scale(1.05); }
+      color: #ff6600;
     }
   </style>
 </head>
+
 <body>
   <div id="container">
     <div id="map"></div>
@@ -210,11 +180,15 @@
     </div>
   </div>
 
+  <div id="modal-img">
+    <img src="">
+  </div>
+
   <script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js"></script>
+
   <script>
     document.addEventListener("DOMContentLoaded", function() {
-      const map = L.map('map', { scrollWheelZoom: false })
-        .setView([43.3613, -8.4177], 17);
+      const map = L.map('map', { scrollWheelZoom: false }).setView([43.3613, -8.4177], 17);
 
       L.tileLayer('https://{s}.basemaps.cartocdn.com/light_all/{z}/{x}/{y}{r}.png', {
         attribution: '&copy; <a href="https://www.openstreetmap.org/">OSM</a> | &copy; <a href="https://carto.com/">CARTO</a>',
@@ -289,92 +263,73 @@
         }
       ];
       
-      const iconMuino = L.divIcon({
-        html: `<img src="https://upload.wikimedia.org/wikipedia/commons/8/8e/Windmill_icon.svg" class="icon-muino">`,
-        className: "",
-        iconSize: [60, 60],
-        iconAnchor: [30, 55],
-        popupAnchor: [0, -40]
+      const iconMuino = L.icon({
+        iconUrl: "https://raw.githubusercontent.com/pointhi/leaflet-color-markers/master/img/marker-icon-orange.png",
+        shadowUrl: "https://cdnjs.cloudflare.com/ajax/libs/leaflet/1.9.4/images/marker-shadow.png",
+        iconSize: [35, 55],
+        iconAnchor: [17, 55],
+        popupAnchor: [1, -44]
+      });
+
+      const iconDefault = L.icon({
+        iconUrl: "https://cdnjs.cloudflare.com/ajax/libs/leaflet/1.9.4/images/marker-icon.png",
+        shadowUrl: "https://cdnjs.cloudflare.com/ajax/libs/leaflet/1.9.4/images/marker-shadow.png",
+        iconSize: [25, 41],
+        iconAnchor: [12, 41]
       });
 
       const panel = document.getElementById("panel-content");
 
-        puntos.forEach(p => {
-          const marker = L.marker(
-            p.coords,
-            p.titulo.includes("O Muíño da Gramela")
-              ? { icon: iconMuino }
-              : {}
-          ).addTo(map);
+      puntos.forEach(p => {
+        const marker = L.marker(
+          p.coords,
+          p.titulo.includes("O Muíño da Gramela")
+            ? { icon: iconMuino }
+            : { icon: iconDefault }
+        ).addTo(map);
 
-
-          marker.on("click", () => {
-            const artista = p.artista ? `
-              <div class="artist-info">
-                <div class="artista">${p.artista}</div>
-                <div class="artist-links">
-
-                  ${
-                    p.instagram 
-                      ? Array.isArray(p.instagram)
-                        ? p.instagram.map(link => 
-                            `<a href="${link}" target="_blank" class="icon-link">
-                              <i class="fa-brands fa-instagram"></i>
-                            </a>`
-                          ).join("")
-                        : `<a href="${p.instagram}" target="_blank" class="icon-link">
+        marker.on("click", () => {
+          const artista = p.artista ? `
+            <div class="artist-info">
+              <div class="artista">${p.artista}</div>
+              <div class="artist-links">
+                ${
+                  p.instagram
+                    ? Array.isArray(p.instagram)
+                      ? p.instagram.map(link =>
+                          `<a href="${link}" target="_blank" class="icon-link">
                             <i class="fa-brands fa-instagram"></i>
                           </a>`
-                      : ""
-                  }
-
-                  ${
-                    p.web 
-                      ? Array.isArray(p.web)
-                        ? p.web.map(link => 
-                            `<a href="${link}" target="_blank" class="icon-link">
-                              <i class="fa-solid fa-globe"></i>
-                            </a>`
-                          ).join("")
-                        : `<a href="${p.web}" target="_blank" class="icon-link">
-                            <i class="fa-solid fa-globe"></i>
-                          </a>`
-                      : ""
-                  }
-
-                </div>
+                        ).join("")
+                      : `<a href="${p.instagram}" target="_blank" class="icon-link">
+                          <i class="fa-brands fa-instagram"></i>
+                        </a>`
+                    : ""
+                }
               </div>
-            ` : "";
+            </div>` : "";
 
-            const titulo = p.titulo ? `<div class="titulo">${p.titulo}</div>` : "";
-            const descripcion = p.descripcion ? `<p class="descripcion">${p.descripcion}</p>` : "";
-            const ubicacion = p.ubicacion ? `<p><strong>📍 ${p.ubicacion}</strong></p>` : "";
-            const img = p.img ? `
-              <div class="img-wrapper">
-                <a href="${p.img}" class="glightbox" data-gallery="muinos">
-                  <img src="${p.img}">
-                  <div class="zoom-btn"><i class="fa-solid fa-magnifying-glass-plus"></i></div>
-                </a>
-              </div>` : "";
+          const titulo = p.titulo ? `<div class="titulo">${p.titulo}</div>` : "";
+          const descripcion = p.descripcion ? `<p class="descripcion">${p.descripcion}</p>` : "";
+          const ubicacion = p.ubicacion ? `<p><strong>📍 ${p.ubicacion}</strong></p>` : "";
+          const img = p.img ? `
+            <div class="img-wrapper">
+              <img src="${p.img}">
+              <div class="zoom-btn"><i class="fa-solid fa-magnifying-glass-plus"></i></div>
+            </div>` : "";
 
-            panel.style.opacity = 0;
-            setTimeout(() => {
-              panel.innerHTML = `${artista}${titulo}${ubicacion}${descripcion}${img}`;
-              panel.style.opacity = 1;
-            }, 300);
-          });
+          panel.style.opacity = 0;
+          setTimeout(() => {
+            panel.innerHTML = `${artista}${titulo}${ubicacion}${descripcion}${img}`;
+            panel.style.opacity = 1;
+          }, 300);
         });
+      });
 
-      // Cerrar modal al hacer clic
       document.getElementById("modal-img").addEventListener("click", () => {
         document.getElementById("modal-img").style.display = "none";
       });
     });
   </script>
-
-  <div id="modal-img">
-    <img src="">
-  </div>
-
 </body>
 </html>
