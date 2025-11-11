@@ -86,19 +86,6 @@
       color: #666;
     }
 
-    #frases {
-      font-size: 1.2rem;
-      text-align: center;
-      font-style: italic;
-      transition: 1s;
-      opacity: 1;
-      transform: translateY(0);
-      color: orange;
-      margin-top: 1rem;
-      padding: 0.5rem;
-      border-top: 1px solid #eee;
-    }
-
     .leaflet-popup-content-wrapper {
       border-radius: 10px;
       box-shadow: 0 4px 15px rgba(0,0,0,0.2);
@@ -209,8 +196,6 @@
       <div id="panel-content">
         <h2>Selecciona un punto no mapa</h2>
       </div>
-
-      <div id="frases">Era un ente, un referente</div>
     </div>
   </div>
 
@@ -234,13 +219,14 @@
           img: "https://www.asociacionbuxa.com/wp-content/uploads/2024/07/20200609-174852.jpg"
         },
         {
-          artista: "Gerardo Borrás e Érica Paolucci",
-          titulo: "<em>Aquí antes había un muíño. 2025</em>",
-          descripcion: `Obra que retoma o espíritu de Sargadelos (nas cores e tipografías) para crear unha identidade nova desta historia sobre este patrimonio barrial`,
+          artista: "De Letras",
+          titulo: "<em>Reflejo memoria. 2025</em>",
+          descripcion: `A obra aliméntase do visual a partir de dous elementos da cultura galega: a tipografía característica de Galicia e a identidade visual do proxecto Sargadelos, e constrúese desde o simbólico co muíño, un elemento clave no contexto da obra e un símbolo galego. Os tres conforman unha tríade patrimonial orientada á posta en valor da memoria. Da letra galega tómanse principalmente a súa forma, incorporando variacións nos caracteres para salientar a intervención artesanal, e de Sargadelos retómase a sintaxe visual dos seus obxectos e o uso da cor. Todo isto realízase mediante a técnica de pintura sobre vidro, inspirándose na letra pintada e na tradición da rotulación de vidreiras, onde o reflexo remite á memoria do muíño e, ao mesmo tempo, permite verse xunto a el.`,
           instagram: [
             "https://www.instagram.com/geraborras?utm_source=ig_web_button_share_sheet&igsh=ZDNlZDc0MzIxNw==",
             "https://www.instagram.com/eri_papupi?utm_source=ig_web_button_share_sheet&igsh=ZDNlZDc0MzIxNw=="],
           coords: [43.3613, -8.4176],
+          ubicacion: "AVDA. GRAMELA 16. Libraría Galgo Azul",
           img: "https://raw.githubusercontent.com/sandravaztui/aqui-antes-habia-un-muino/main/mural-gerardo-borras-y-erica-paolucci-avenida-gramela-16.jpg"
         },
         {
@@ -250,6 +236,7 @@
           instagram: "https://www.instagram.com/davidpintor1975?utm_source=ig_web_button_share_sheet&igsh=ZDNlZDc0MzIxNw==",
           web: "https://www.davidpintor.com/",
           coords: [43.3611,-8.4174],
+          ubicacion: "ALCALDE LENS 1. Empresa Galicia Cleans",
           img: "https://raw.githubusercontent.com/sandravaztui/aqui-antes-habia-un-muino/main/mural-david-pintor-alcalde-lens-1.jpg"
         },
         {
@@ -259,25 +246,29 @@
           instagram: "https://www.instagram.com/dimeplaga?utm_source=ig_web_button_share_sheet&igsh=ZDNlZDc0MzIxNw==",
           web: "https://www.davidpintor.com/",
           coords: [43.3620,-8.4205],
+          ubicacion: "PRAZA DO COMERCIO 6. Fundación Sergio Villar",
           img: "https://raw.githubusercontent.com/sandravaztui/aqui-antes-habia-un-muino/main/mural-dime-plaga-praza-do-comercio-6.jpg"
         },
         {
           artista: "Julia Abalde",
           titulo: "<em>Sen título. 2025</em>",
           descripcion: `Aquí a descrición.`,
-          coords: [43.3617,-8.4185]
+          coords: [43.3617,-8.4185], 
+          ubicacion: "AVENIDA GRAMELA 23 BAIXO. Cociña Tacos Niño Rey"
         },
         {
           artista: "Cuchiflainas",
           titulo: "<em>Sen título. 2025</em>",
           descripcion: `Aquí a descrición.`,
-          coords: [43.3614,-8.4185]
+          coords: [43.3614,-8.4185],
+          ubicacion: "AVENIDA GRAMELA 15. Distrito Arte"
         },
         {
           artista: "Mónica Coto",
           titulo: "<em>Sen título. 2025</em>",
           descripcion: `Aquí a descrición.`,
-          coords: [43.3619,-8.4202]
+          coords: [43.3619,-8.4202],
+          ubicacion: "CANCELA DE AFUERA 5. Nails Studio Vip"
         },
         {
           artista: "Laprizlázuli",
@@ -342,6 +333,7 @@
 
             const titulo = p.titulo ? `<div class="titulo">${p.titulo}</div>` : "";
             const descripcion = p.descripcion ? `<p class="descripcion">${p.descripcion}</p>` : "";
+            const ubicacion = p.ubicacion ? `<p><strong>📍 ${p.ubicacion}</strong></p>` : "";
             const img = p.img ? `
               <div class="img-wrapper">
                 <img src="${p.img}">
@@ -350,52 +342,11 @@
 
             panel.style.opacity = 0;
             setTimeout(() => {
-              panel.innerHTML = `${artista}${titulo}${descripcion}${img}`;
+              panel.innerHTML = `${artista}${titulo}${ubicacion}${descripcion}${img}`;
               panel.style.opacity = 1;
             }, 300);
           });
         });
-
-      // --- Frases aleatorias ---
-      const frases = [
-        "El molino está muy presente y no se sabe",
-        "Era un ente, un referente",
-        "Nas pedras soltas xogaban os nenos e as nenas",
-        "Así estamos, que non temos un lugar verde, só casas",
-        "A festra do meu pai daba á de fronte ó muíño",
-        "No había muchos más espacios que ese para jugar",
-        "Nos deixaban facer a fogueira de San Xoán",
-        "Desmontar se desmontou, pero nunca máis se volveu montar",
-        "O caso é que non se respectou a historia do muíño",
-        "Temos a Torre de Hércules, pero tamén tiñamos ese muíño",
-        "Parecía que estabamos noutro mundo",
-        "O muíño era un conxunto: a plataforma, as pedras, o recinto... e cumpría unha función no barrio",
-        "Eu cando abría a xanela, víao"
-      ];
-
-      const bloque = document.getElementById("frases");
-
-      function cambiarFrase() {
-        bloque.style.opacity = 0;
-        bloque.style.transform = "translateY(10px)";
-        setTimeout(() => {
-          const random = Math.floor(Math.random() * frases.length);
-          bloque.textContent = frases[random];
-          bloque.style.opacity = 1;
-          bloque.style.transform = "translateY(0)";
-        }, 1000);
-      }
-
-      cambiarFrase();
-      setInterval(cambiarFrase, 5000);
-      // Evento para ampliar imagen
-      document.addEventListener("click", e => {
-        if ((e.target.tagName === "IMG" && e.target.closest("#panel")) || e.target.closest(".zoom-btn")) {
-          const img = e.target.closest(".img-wrapper").querySelector("img");
-          document.getElementById("modal-img").style.display = "flex";
-          document.getElementById("modal-img").querySelector("img").src = img.src;
-        }
-      });
 
       // Cerrar modal al hacer clic
       document.getElementById("modal-img").addEventListener("click", () => {
