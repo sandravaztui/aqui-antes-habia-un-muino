@@ -304,7 +304,8 @@
           artista: "Laprizlázuli",
           titulo: "<em>Mural en proceso</em>",
           descripcion: `Moi cedo podrás disfrutar do mural no barrio`,
-          coords: [43.3619,-8.4195],
+          coords: [43.3616, -8.4194],
+          ubicacion: "AV. CONCHIÑAS 17-21. Aparcadoiro As Conchiñas",
           img: "https://raw.githubusercontent.com/sandravaztui/aqui-antes-habia-un-muino/main/mural-en-proceso.png"
         }
       ];
@@ -357,7 +358,7 @@
 
           const titulo = p.titulo ? `<div class="titulo">${p.titulo}</div>` : "";
           const descripcion = p.descripcion ? `<p class="descripcion">${p.descripcion}</p>` : "";
-          const ubicacion = p.ubicacion ? `<p><strong>📍 ${p.ubicacion}</strong></p>` : "";
+          const ubicacion = p.ubicacion ? `<p>📍 ${p.ubicacion}</p>` : "";
           const img = p.img ? `
             <div class="img-wrapper">
               <img src="${p.img}">
