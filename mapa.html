@@ -59,31 +59,14 @@
       transition: opacity 0.5s;
     }
 
-    #panel {
-      flex: 1;
-      background: white;
-      padding: 1rem 1.5rem;
-      border-left: 2px solid #e0e0e0;
-      display: flex;
-      flex-direction: column;
-      justify-content: space-between;
-      overflow-y: auto;
-      box-shadow: inset 0 0 20px rgba(0,0,0,0.05);
-    }
-
-    #panel-content {
-      flex-grow: 1;
-      transition: opacity 1s;
-    }
-
-    #panel h2 {
+    #info-panel h2 {
       font-weight: bold;
       font-size: x-large;
       color: #1E3A8A;
       margin-bottom: 0.3rem;
     }
 
-    #panel .artista {
+    #info-panel .artista {
       font-weight: bold;
       font-size: larger;
       color: #1E3A8A;
@@ -92,7 +75,7 @@
       letter-spacing: 0.5px;
     }
 
-    #panel .titulo {
+    #info-panel .titulo {
       font-weight: bold;
       font-size: large;
       font-style: italic;
@@ -100,23 +83,15 @@
       color: #1E3A8A;
     }
 
-    #panel img {
-      width: 100%;
-      max-height: 45vh;
-      border-radius: 12px;
-      margin-top: 0.5rem;
-      box-shadow: 0 2px 8px rgba(0,0,0,0.1);
-      object-fit: cover;
-    }
-
-    #panel p {
+    #info-panel p {
       font-size: 0.95rem;
       line-height: 1.5;
-      color: #333;
+      color: #666;
     }
 
-    #panel p.descripcion {
-      color: #666;
+    #info-panel p.descripcion {
+      font-style: italic;
+      text-align: justify;
     }
 
     .leaflet-popup-content-wrapper {
@@ -217,10 +192,6 @@
     </div>
   </div>
 
-  <div id="modal-img">
-    <img src="">
-  </div>
-
   <script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js"></script>
 
   <script>
@@ -310,14 +281,6 @@
         }
       ];
       
-      const iconMuino = L.icon({
-        iconUrl: "https://raw.githubusercontent.com/pointhi/leaflet-color-markers/master/img/marker-icon-orange.png",
-        shadowUrl: "https://cdnjs.cloudflare.com/ajax/libs/leaflet/1.9.4/images/marker-shadow.png",
-        iconSize: [35, 55],
-        iconAnchor: [17, 55],
-        popupAnchor: [1, -44]
-      });
-
       const iconDefault = L.icon({
         iconUrl: "https://cdnjs.cloudflare.com/ajax/libs/leaflet/1.9.4/images/marker-icon.png",
         shadowUrl: "https://cdnjs.cloudflare.com/ajax/libs/leaflet/1.9.4/images/marker-shadow.png",
@@ -325,15 +288,11 @@
         iconAnchor: [12, 41]
       });
 
-      const panel = document.getElementById("panel-content");
-
+      const infoPanel = document.getElementById("info-content");
+      const imagePanel = document.getElementById("mural-image");
+      
       puntos.forEach(p => {
-        const marker = L.marker(
-          p.coords,
-          p.titulo.includes("O Muíño da Gramela")
-            ? { icon: iconMuino }
-            : { icon: iconDefault }
-        ).addTo(map);
+        const marker = L.marker(p.coords, { icon: iconDefault }).addTo(map);
 
         marker.on("click", () => {
           const artista = p.artista ? `
@@ -357,16 +316,8 @@
             </div>` : "";
 
           const titulo = p.titulo ? `<div class="titulo">${p.titulo}</div>` : "";
-          const descripcion = p.descripcion ? `<p class="descripcion">${p.descripcion}</p>` : "";
           const ubicacion = p.ubicacion ? `<p>📍 ${p.ubicacion}</p>` : "";
-          const img = p.img ? `
-            <div class="img-wrapper">
-              <img src="${p.img}">
-              <div class="zoom-btn"><i class="fa-solid fa-magnifying-glass-plus"></i></div>
-            </div>` : "";
-
-          const infoPanel = document.getElementById("info-content");
-          const imagePanel = document.getElementById("mural-image");
+          const descripcion = p.descripcion ? `<p class="descripcion">${p.descripcion}</p>` : "";
 
           infoPanel.style.opacity = 0;
           setTimeout(() => {
@@ -380,45 +331,8 @@
               imagePanel.style.display = "none";
             }
           }, 300);
-
         });
       });
-
-        document.body.addEventListener('click', function (e) {
-          const zoomBtn = e.target.closest('.zoom-btn');
-          if (!zoomBtn) return;
-        
-          const wrapper = zoomBtn.closest('.img-wrapper');
-          if (!wrapper) return;
-          const img = wrapper.querySelector('img');
-          if (!img) return;
-        
-          const modal = document.getElementById('modal-img');
-          modal.querySelector('img').src = img.src;
-          modal.style.display = 'flex';
-          e.stopPropagation();
-        });
-        
-        document.getElementById('modal-img').addEventListener('click', function (e) {
-          if (e.target === this) {
-            this.style.display = 'none';
-            this.querySelector('img').src = '';
-          }
-        });
-        
-        document.querySelector('#modal-img img').addEventListener('click', function (e) {
-          e.stopPropagation();
-        });
-        
-        document.addEventListener('keydown', function(e) {
-          if (e.key === 'Escape') {
-            const modal = document.getElementById('modal-img');
-            if (modal && modal.style.display === 'flex') {
-              modal.style.display = 'none';
-              modal.querySelector('img').src = '';
-            }
-          }
-        });
     });
   </script>
 </body>
