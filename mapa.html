@@ -237,7 +237,7 @@
     document.addEventListener("DOMContentLoaded", function () {
       const isMobile = window.innerWidth < 992;
       const map = L.map(isMobile ? "map-mobile" : "map-desktop", { scrollWheelZoom: false })
-        .setView([43.3613, -8.4180], 16.5);
+        .setView([43.3613, -8.4185], 16.5);
 
       L.tileLayer("https://{s}.basemaps.cartocdn.com/light_all/{z}/{x}/{y}{r}.png", {
         attribution: '&copy; <a href="https://www.openstreetmap.org/">OSM</a> | &copy; <a href="https://carto.com/">CARTO</a>',
