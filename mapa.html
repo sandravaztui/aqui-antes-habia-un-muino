@@ -1,33 +1,35 @@
 <!DOCTYPE html>
 <html lang="gl">
 <head>
-  <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <title>Mapa dos murais</title>
   <link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css" />
-  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css">
-  
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css" />
+
   <style>
     html, body {
       margin: 0;
       padding: 0;
       height: 100%;
-      font-family: sans-serif;
+      font-family: "Segoe UI", sans-serif;
       background: #f8f8f8;
+      overflow: hidden;
     }
 
+    /* --- DISEÑO ESCRITORIO --- */
     #container {
       display: flex;
       height: 100vh;
       width: 100%;
     }
 
-    #map, #image-panel, #info-panel {
+    #map-desktop, #image-panel, #info-panel {
       flex: 1;
       transition: all 0.5s ease;
     }
 
-    #map {
+    #map-desktop {
       height: 100%;
     }
 
@@ -45,7 +47,6 @@
       width: 100%;
       height: 100%;
       object-fit: cover;
-      display: block;
     }
 
     #info-panel {
@@ -94,73 +95,10 @@
       text-align: justify;
     }
 
-    .leaflet-popup-content-wrapper {
-      border-radius: 10px;
-      box-shadow: 0 4px 15px rgba(0,0,0,0.2);
-      max-width: 280px;
-    }
-
-    .leaflet-popup-content h3 {
-      margin-top: 0;
-      color: #1E3A8A;
-      font-size: 1.1rem;
-    }
-
-    #modal-img {
-      display: none;
-      position: fixed;
-      z-index: 9999;
-      top: 0; left: 0;
-      width: 100vw;
-      height: 100vh;
-      background: rgba(0,0,0,0.8);
-      justify-content: center;
-      align-items: center;
-    }
-
-    #modal-img img {
-      max-width: 90vw;
-      max-height: 90vh;
-      border-radius: 12px;
-    }
-
-    .img-wrapper {
-      position: relative;
-      display: inline-block;
-      width: 100%;
-    }
-
-    .zoom-btn {
-      position: absolute;
-      bottom: 8px;
-      right: 8px;
-      width: 38px;
-      height: 38px;
-      background: white;
-      border-radius: 50%;
-      display: flex;
-      justify-content: center;
-      align-items: center;
-      font-size: 18px;
-      cursor: pointer;
-      border: 2px solid #ddd;
-      box-shadow: 0 2px 6px rgba(0,0,0,0.2);
-      transition: 0.2s;
-    }
-
-    .zoom-btn:hover {
-      background: #f1f1f1;
-    }
-
-    .artist-info {
-      display: flex;
-      justify-content: space-between;
-      align-items: center;
-    }
-
     .artist-links {
       display: flex;
       gap: 10px;
+      margin-top: 0.5rem;
     }
 
     .icon-link i {
@@ -174,19 +112,105 @@
       transform: scale(1.2);
       color: #ff6600;
     }
+
+    /* --- DISEÑO MÓVIL (RESPONSIVE) --- */
+    #map-mobile {
+      position: absolute;
+      top: 0; left: 0;
+      width: 100%; height: 100%;
+      z-index: 1;
+      display: none;
+    }
+
+    #side-panel {
+      position: fixed;
+      top: 0;
+      right: -100%;
+      width: 80%;
+      height: 100%;
+      background: white;
+      box-shadow: -3px 0 15px rgba(0,0,0,0.2);
+      z-index: 999;
+      transition: right 0.5s ease;
+      display: flex;
+      flex-direction: column;
+    }
+
+    #side-panel.active {
+      right: 0;
+    }
+
+    #close-panel {
+      position: absolute;
+      left: -35px;
+      top: 50%;
+      transform: translateY(-50%);
+      background: #1E3A8A;
+      color: white;
+      border: none;
+      border-radius: 8px 0 0 8px;
+      padding: 8px 10px;
+      cursor: pointer;
+      z-index: 1000;
+      box-shadow: -2px 0 5px rgba(0,0,0,0.2);
+    }
+
+    #panel-content {
+      flex: 1;
+      overflow-y: auto;
+    }
+
+    #panel-content img {
+      width: 100%;
+      height: auto;
+      object-fit: cover;
+      display: block;
+    }
+
+    #info-content-mobile {
+      padding: 1rem 1.5rem;
+    }
+
+    #start-message {
+      position: absolute;
+      top: 15px;
+      left: 50%;
+      transform: translateX(-50%);
+      background: rgba(255,255,255,0.9);
+      padding: 10px 18px;
+      border-radius: 10px;
+      box-shadow: 0 2px 8px rgba(0,0,0,0.2);
+      z-index: 10;
+      font-size: 1rem;
+      color: #1E3A8A;
+      font-weight: bold;
+      display: none;
+    }
+
+    @media (max-width: 992px) {
+      #container {
+        display: none;
+      }
+      #map-mobile, #start-message {
+        display: block;
+      }
+    }
+
+    @media (min-width: 993px) {
+      #side-panel, #close-panel, #start-message {
+        display: none;
+      }
+    }
   </style>
 </head>
 
 <body>
+  <!-- Vista escritorio -->
   <div id="container">
-    <div id="map"></div>
-
+    <div id="map-desktop"></div>
     <div id="image-panel">
-      <img id="mural-image" 
-           src="https://raw.githubusercontent.com/sandravaztui/aqui-antes-habia-un-muino/main/aqui-antes-habia-un-muino.png" 
-           alt="Imaxe do mural">
+      <img id="mural-image" src="https://raw.githubusercontent.com/sandravaztui/aqui-antes-habia-un-muino/main/aqui-antes-habia-un-muino.png" alt="Imaxe do mural">
     </div>
-
     <div id="info-panel">
       <div id="info-content">
         <h2>Selecciona un punto no mapa</h2>
@@ -194,15 +218,28 @@
     </div>
   </div>
 
+  <!-- Vista móvil -->
+  <div id="map-mobile"></div>
+  <div id="start-message">🗺️ Selecciona un punto no mapa</div>
+
+  <div id="side-panel">
+    <button id="close-panel"><i class="fa-solid fa-chevron-right"></i></button>
+    <div id="panel-content">
+      <img id="panel-image" src="" alt="Mural" />
+      <div id="info-content-mobile"></div>
+    </div>
+  </div>
+
   <script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js"></script>
-
   <script>
-    document.addEventListener("DOMContentLoaded", function() {
-      const map = L.map('map', { scrollWheelZoom: false }).setView([43.3613, -8.4180], 16.5);
+    document.addEventListener("DOMContentLoaded", function () {
+      const isMobile = window.innerWidth < 992;
+      const map = L.map(isMobile ? "map-mobile" : "map-desktop", { scrollWheelZoom: false })
+        .setView([43.3613, -8.4180], 16.5);
 
-      L.tileLayer('https://{s}.basemaps.cartocdn.com/light_all/{z}/{x}/{y}{r}.png', {
+      L.tileLayer("https://{s}.basemaps.cartocdn.com/light_all/{z}/{x}/{y}{r}.png", {
         attribution: '&copy; <a href="https://www.openstreetmap.org/">OSM</a> | &copy; <a href="https://carto.com/">CARTO</a>',
-        subdomains: 'abcd',
+        subdomains: "abcd",
         maxZoom: 19
       }).addTo(map);
 
@@ -284,58 +321,55 @@
           img: "https://raw.githubusercontent.com/sandravaztui/aqui-antes-habia-un-muino/main/mural-en-proceso.png"
         }
       ];
-      
+
       const iconDefault = L.icon({
         iconUrl: "https://cdnjs.cloudflare.com/ajax/libs/leaflet/1.9.4/images/marker-icon.png",
         shadowUrl: "https://cdnjs.cloudflare.com/ajax/libs/leaflet/1.9.4/images/marker-shadow.png",
         iconSize: [25, 41],
-        iconAnchor: [12, 41]
+        iconAnchor: [12, 41],
       });
 
-      const infoPanel = document.getElementById("info-content");
       const imagePanel = document.getElementById("mural-image");
-      
+      const infoPanel = document.getElementById("info-content");
+      const sidePanel = document.getElementById("side-panel");
+      const panelImage = document.getElementById("panel-image");
+      const infoContentMobile = document.getElementById("info-content-mobile");
+      const startMessage = document.getElementById("start-message");
+      const closePanel = document.getElementById("close-panel");
+
       puntos.forEach(p => {
         const marker = L.marker(p.coords, { icon: iconDefault }).addTo(map);
 
         marker.on("click", () => {
-          const artista = p.artista ? `
-            <div class="artist-info">
-              <div class="artista">${p.artista}</div>
-              <div class="artist-links">
-                ${
-                  p.instagram
-                    ? Array.isArray(p.instagram)
-                      ? p.instagram.map(link =>
-                          `<a href="${link}" target="_blank" class="icon-link">
-                            <i class="fa-brands fa-instagram"></i>
-                          </a>`
-                        ).join("")
-                      : `<a href="${p.instagram}" target="_blank" class="icon-link">
-                          <i class="fa-brands fa-instagram"></i>
-                        </a>`
-                    : ""
-                }
-              </div>
-            </div>` : "";
+          const artistLinks = p.instagram
+            ? `<a href="${p.instagram}" target="_blank" class="icon-link"><i class="fa-brands fa-instagram"></i></a>` : "";
 
-          const titulo = p.titulo ? `<div class="titulo">${p.titulo}</div>` : "";
-          const ubicacion = p.ubicacion ? `<p>📍 ${p.ubicacion}</p>` : "";
-          const descripcion = p.descripcion ? `<p class="descripcion">${p.descripcion}</p>` : "";
+          const contentHTML = `
+            <div class="artista">${p.artista ?? ""}</div>
+            <div class="titulo">${p.titulo ?? ""}</div>
+            <p>📍 ${p.ubicacion ?? ""}</p>
+            <p class="descripcion">${p.descripcion ?? ""}</p>
+            <div class="artist-links">${artistLinks}</div>
+          `;
 
-          infoPanel.style.opacity = 0;
-          setTimeout(() => {
-            infoPanel.innerHTML = `${artista}${titulo}${ubicacion}${descripcion}`;
-            infoPanel.style.opacity = 1;
-
-            if (p.img) {
-              imagePanel.src = p.img;
-              imagePanel.style.display = "block";
-            } else {
-              imagePanel.style.display = "none";
-            }
-          }, 300);
+          if (window.innerWidth >= 992) {
+            infoPanel.style.opacity = 0;
+            setTimeout(() => {
+              infoPanel.innerHTML = contentHTML;
+              infoPanel.style.opacity = 1;
+              imagePanel.src = p.img || "";
+            }, 300);
+          } else {
+            startMessage.style.display = "none";
+            infoContentMobile.innerHTML = contentHTML;
+            panelImage.src = p.img || "";
+            sidePanel.classList.add("active");
+          }
         });
+      });
+
+      closePanel.addEventListener("click", () => {
+        sidePanel.classList.remove("active");
       });
     });
   </script>
