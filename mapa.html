@@ -7,7 +7,7 @@
   <link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css" />
   <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css" />
 
-  <style>
+<style>
     html, body {
       margin: 0;
       padding: 0;
@@ -17,7 +17,6 @@
       overflow: hidden;
     }
 
-    /* --- DISEÑO ESCRITORIO --- */
     #container {
       display: flex;
       height: 100vh;
@@ -60,14 +59,14 @@
       transition: opacity 0.5s;
     }
 
-    #info-panel h2 {
+    .info-text h2 {
       font-weight: bold;
       font-size: x-large;
       color: #1E3A8A;
       margin-bottom: 0.3rem;
     }
 
-    #info-panel .artista {
+    .artista {
       font-weight: bold;
       font-size: larger;
       color: #1E3A8A;
@@ -76,7 +75,7 @@
       letter-spacing: 0.5px;
     }
 
-    #info-panel .titulo {
+    .titulo {
       font-weight: bold;
       font-size: large;
       font-style: italic;
@@ -84,15 +83,16 @@
       color: #1E3A8A;
     }
 
-    #info-panel p {
+    .descripcion {
+      font-style: italic;
+      text-align: justify;
+    }
+
+    #info-panel p,
+    #info-content-mobile p {
       font-size: 0.95rem;
       line-height: 1.5;
       color: #666;
-    }
-
-    #info-panel p.descripcion {
-      font-style: italic;
-      text-align: justify;
     }
 
     .artist-links {
@@ -113,7 +113,7 @@
       color: #ff6600;
     }
 
-    /* --- DISEÑO MÓVIL (RESPONSIVE) --- */
+    /* --- DISEÑO RESPONSIVE --- */
     #map-mobile {
       position: absolute;
       top: 0; left: 0;
@@ -220,7 +220,7 @@
 
   <!-- Vista móvil -->
   <div id="map-mobile"></div>
-  <div id="start-message">🗺️ Selecciona un punto no mapa</div>
+  <div id="start-message">Selecciona un punto no mapa</div>
 
   <div id="side-panel">
     <button id="close-panel"><i class="fa-solid fa-chevron-right"></i></button>
@@ -341,8 +341,10 @@
         const marker = L.marker(p.coords, { icon: iconDefault }).addTo(map);
 
         marker.on("click", () => {
-          const artistLinks = p.instagram
-            ? `<a href="${p.instagram}" target="_blank" class="icon-link"><i class="fa-brands fa-instagram"></i></a>` : "";
+          const artistLinks = `
+            ${p.web ? `<a href="${p.web}" target="_blank" class="icon-link" title="Web"><i class="fa-solid fa-globe"></i></a>` : ""}
+            ${p.instagram ? `<a href="${p.instagram}" target="_blank" class="icon-link" title="Instagram"><i class="fa-brands fa-instagram"></i></a>` : ""}
+          `;
 
           const contentHTML = `
             <div class="artista">${p.artista ?? ""}</div>
