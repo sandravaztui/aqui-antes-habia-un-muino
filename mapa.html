@@ -85,7 +85,6 @@
     }
 
     .descripcion {
-      font-style: italic;
       text-align: justify;
     }
 
@@ -351,7 +350,7 @@
           const contentHTML = `
             <div class="artista">${p.artista ?? ""}</div>
             <div class="titulo">${p.titulo ?? ""}</div>
-            <p>📍 ${p.ubicacion ?? ""}</p>
+            <p class="ubicacion">${p.ubicacion ?? ""}</p>
             <p class="descripcion">${p.descripcion ?? ""}</p>
             <div class="artist-links">${artistLinks}</div>
           `;
