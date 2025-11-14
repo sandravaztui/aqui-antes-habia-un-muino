@@ -298,7 +298,7 @@
         },
         {
           artista: "Mónica Coto",
-          titulo: "<em>Mural en proceso. 2025</em>",
+          titulo: "<em>O muíño e o mar. 2025</em>",
           descripcion: `Esta obra de carácter surrealista fala da conexión da Coruña como cidade mariñeira e labrega, poñendo en valor o desaparecido muíño da Gramela: unha icona que segue a formar parte da memoria colectiva. O mural é un xesto artístico que reivindica a unión entre o pasado e o presente, para que as súas pedras, esquecidas durante anos, poidan volver formar parte da paisaxe e da identidade viva do barrio onde naceu, recuperando así a súa esencia.`,
           instagram: "https://www.instagram.com/monicacoto.art?utm_source=ig_web_button_share_sheet&igsh=ZDNlZDc0MzIxNw==",
           coords: [43.3608,-8.4163],
@@ -353,7 +353,7 @@
       const closePanel = document.getElementById("close-panel");
 
       puntos.forEach(p => {
-        const icon = p.titulo.includes("Mural en proceso") ? iconGris : p.titulo.includes("O Muíño da Gramela, 1788") ? iconMuino : iconDefault;
+        const icon = p.titulo.includes("Mural en proceso") ? iconGris : p.titulo.includes("O Muíño da Gramela, 1974") ? iconMuino : iconDefault;
         const marker = L.marker(p.coords, { icon }).addTo(map);
 
         marker.on("click", () => {
