@@ -314,7 +314,7 @@
           img: "https://raw.githubusercontent.com/sandravaztui/aqui-antes-habia-un-muino/main/mural-en-proceso.png"
         },
         {
-          titulo: "<em>O Muíño da Gramela, 1974</em>",
+          titulo: "<em>O Muíño da Gramela</em>",
           descripcion: `Antigo muíño de vento situado no barrio do Agra do Orzán, símbolo da memoria industrial da cidade.`,
           coords: [43.3613, -8.4177],
           img: "https://www.asociacionbuxa.com/wp-content/uploads/2024/07/20200609-174852.jpg"
@@ -351,7 +351,7 @@
       const closePanel = document.getElementById("close-panel");
 
       puntos.forEach(p => {
-        const icon = p.titulo.includes("Mural en proceso") ? iconGris : p.titulo.includes("O Muíño da Gramela, 1974") ? iconMuino : iconDefault;
+        const icon = p.titulo.includes("Mural en proceso") ? iconGris : p.titulo.includes("O Muíño da Gramela") ? iconMuino : iconDefault;
         const marker = L.marker(p.coords, { icon }).addTo(map);
 
         marker.on("click", () => {
