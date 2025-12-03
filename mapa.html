@@ -372,7 +372,7 @@
       const closePanel = document.getElementById("close-panel");
 
       puntos.forEach(p => {
-        const icon = p.artista.includes("Toponimia.") ? iconGris : p.titulo.includes("O Muíño da Gramela") ? iconMuino : iconDefault;
+        const icon = p.titulo.includes("O Muíño da Gramela") ? iconMuino : p.artista.includes("Toponimia.") ? iconGris : iconDefault;
         const marker = L.marker(p.coords, { icon }).addTo(map);
 
         marker.on("click", () => {
