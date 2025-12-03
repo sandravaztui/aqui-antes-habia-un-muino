@@ -113,6 +113,31 @@
       color: #ff6600;
     }
 
+    .marker-info {
+      position: relative;
+      width: 25px;
+      height: 41px;
+    }
+
+    .marker-info img {
+      width: 25px;
+      height: 41px;
+    }
+
+    .marker-info .info-label {
+      position: absolute;
+      top: 6px;
+      left: 0;
+      width: 25px;
+      text-align: center;
+      font-weight: bold;
+      font-size: 18px;
+      color: white;
+      text-shadow: 0 0 3px black;
+      pointer-events: none;
+    }
+
+
     /* --- DISEÑO RESPONSIVE --- */
     #map-mobile {
       position: absolute;
@@ -362,6 +387,18 @@
         iconSize: [25, 41],
         iconAnchor: [12, 41],
       });
+
+      const iconToponimia = L.divIcon({
+      className: "",
+      html: `
+        <div class="marker-info">
+          <img src="https://cdnjs.cloudflare.com/ajax/libs/leaflet/1.9.4/images/marker-icon.png">
+          <div class="info-label">i</div>
+        </div>
+      `,
+      iconSize: [25, 41],
+      iconAnchor: [12, 41]
+    });
       
       const imagePanel = document.getElementById("mural-image");
       const infoPanel = document.getElementById("info-content");
